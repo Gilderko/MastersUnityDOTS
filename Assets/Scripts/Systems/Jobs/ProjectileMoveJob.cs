@@ -16,10 +16,17 @@ namespace Systems.Jobs
         [BurstCompile]
         public void Execute(ProjectileAspect projectileAspect)
         {
+            if (projectileAspect.Target.Value == Entity.Null)
+            {
+                return;
+            }
+
             var projectilePosition = PositionLookup[projectileAspect.Entity];
-            var targetPosition = PositionLookup[projectileAspect.Target.Value];
-            
-            var targetDir = targetPosition.Position - projectilePosition.Position;
+            var targetDir = projectilePosition.Forward();
+            if (PositionLookup.TryGetComponent(projectileAspect.Target.Value, out var targetPosition))
+            {
+                targetDir = targetPosition.Position - projectilePosition.Position;
+            }
             
             var newRotation = quaternion.LookRotationSafe(targetDir, math.up()); 
             var newPosition = projectilePosition.Position + projectileAspect.Speed.Value * DeltaTime * projectilePosition.Forward();
