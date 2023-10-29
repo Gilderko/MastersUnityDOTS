@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Components.Aspects;
+﻿using Components.Aspects;
 using Components.Spawning;
 using Unity.Burst;
 using Unity.Entities;
@@ -29,9 +28,9 @@ namespace Systems
             var entity = SystemAPI.GetSingletonEntity<SpawnerTagComponent>();
             var spawnerAspect = SystemAPI.GetAspect<SpawnerAspect>(entity);
             
+            var deltaTime = SystemAPI.Time.DeltaTime;
             foreach (var wave in SystemAPI.Query<WaveAspect>())
             {
-                var deltaTime = SystemAPI.Time.DeltaTime;
                 wave.SpawnNewEntity(deltaTime, ecb, spawnerAspect);
             }
         }

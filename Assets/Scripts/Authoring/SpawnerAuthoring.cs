@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Components;
+using Components.Enemy;
 using Components.Shared;
 using Components.Spawning;
 using Unity.Collections;
