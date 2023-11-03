@@ -8,11 +8,12 @@ namespace Components.Aspects
     {
         public readonly Entity Entity;
 
-        private readonly RefRO<SpeedComponent> _speedComponent;
         private readonly RefRO<TargetComponent> _targetComponent;
         private readonly RefRO<LimitedLifeComponent> _lifeComponent;
 
-        public SpeedComponent Speed => _speedComponent.ValueRO;
+        private readonly RefRO<ProjectileConfigComponent> _projectileConfig;
+
+        public float Speed => _projectileConfig.ValueRO.Config.Value.Speed;
         
         public TargetComponent Target => _targetComponent.ValueRO;
     }

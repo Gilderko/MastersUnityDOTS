@@ -245,6 +245,7 @@ MonoBehaviour:
   ImpactVFX: {fileID: 1606137116517001935, guid: 9b0c912246fb2c84ead6325b5cf1184a,
     type: 3}
   MaxLifeSeconds: 5
+  Damage: 10
 --- !u!1 &5545923683252469821
 GameObject:
   m_ObjectHideFlags: 0

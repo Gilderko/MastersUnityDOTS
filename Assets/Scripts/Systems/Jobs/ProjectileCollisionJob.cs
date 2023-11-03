@@ -11,14 +11,13 @@ namespace Systems.Jobs
     [BurstCompile]
     public partial struct ProjectileCollisionJob : ITriggerEventsJob
     {
-        [ReadOnly]
-        public ComponentLookup<LocalTransform> Positions;
-        [ReadOnly]
-        public ComponentLookup<ImpactComponent> Projectiles;
-        public ComponentLookup<HealthComponent> EnemiesHealth;
-
+        [ReadOnly] public ComponentLookup<LocalTransform> Positions;
+        [ReadOnly] public ComponentLookup<ImpactComponent> Projectiles;
+        [ReadOnly] public ComponentLookup<ProjectileConfigComponent> ProjectileConfigs;
+        [ReadOnly] public ComponentLookup<HealthComponent> Healths;
+        
         public EntityCommandBuffer ECB;
-
+        
         [BurstCompile]
         public void Execute(TriggerEvent triggerEvent)
         {
@@ -30,9 +29,9 @@ namespace Systems.Jobs
                 projectile = triggerEvent.EntityA;
             if (Projectiles.HasComponent(triggerEvent.EntityB))
                 projectile = triggerEvent.EntityB;
-            if (EnemiesHealth.HasComponent(triggerEvent.EntityA))
+            if (Healths.HasComponent(triggerEvent.EntityA))
                 enemy = triggerEvent.EntityA;
-            if (EnemiesHealth.HasComponent(triggerEvent.EntityB))
+            if (Healths.HasComponent(triggerEvent.EntityB))
                 enemy = triggerEvent.EntityB;
 
             // if its a pair of entity we don't want to process, exit
@@ -41,17 +40,14 @@ namespace Systems.Jobs
             {
                 return;
             }
-
+            
             // Damage enemy
-            var hp = EnemiesHealth[enemy];
-            hp.Value -= 5;
-            EnemiesHealth[enemy] = hp;
-
-            if (hp.Value <= 0)
+            var damageToDeal = ProjectileConfigs[projectile].Config.Value.Damage;
+            ECB.AppendToBuffer(enemy, new HitDataComponent()
             {
-                ECB.DestroyEntity(enemy);
-            }
-
+                DamageToTake = damageToDeal
+            });
+            
             // Spawn VFX
             var impactEntity = ECB.Instantiate(Projectiles[projectile].VFXImpactPrefab);
             ECB.SetComponent(impactEntity, LocalTransform.FromPosition(Positions[enemy].Position));

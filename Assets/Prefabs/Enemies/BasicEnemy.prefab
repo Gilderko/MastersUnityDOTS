@@ -326,3 +326,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5
   Health: 50
+  EnemyReward: 25

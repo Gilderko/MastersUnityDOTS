@@ -10,9 +10,9 @@ namespace Components.Aspects
         public readonly Entity Entity;
         
         private readonly RefRW<LocalTransform> _transform;
-        private readonly RefRO<SpeedComponent> _speed;
         private readonly RefRW<NextPathIndexComponent> _pathIndex;
         private readonly RefRO<PathComponent> _pathAsset;
+        private readonly RefRO<EnemyConfigComponent> _enemyConfig;
 
         public LocalTransform Position
         {
@@ -29,7 +29,7 @@ namespace Components.Aspects
             {
                 _pathIndex.ValueRW.NextIndex = (_pathIndex.ValueRO.NextIndex + 1) % path.Length;
             }
-            var movementSpeed = _speed.IsValid ? _speed.ValueRO.Value : 1;
+            var movementSpeed = _enemyConfig.IsValid ? _enemyConfig.ValueRO.Config.Value.Speed : 1;
             
             _transform.ValueRW.Position += math.normalize(direction) * time * movementSpeed;
             _transform.ValueRW.Rotation = quaternion.LookRotationSafe(direction, math.up()); 

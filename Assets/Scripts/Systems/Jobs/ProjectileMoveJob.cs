@@ -29,7 +29,7 @@ namespace Systems.Jobs
             }
             
             var newRotation = quaternion.LookRotationSafe(targetDir, math.up()); 
-            var newPosition = projectilePosition.Position + projectileAspect.Speed.Value * DeltaTime * projectilePosition.Forward();
+            var newPosition = projectilePosition.Position + projectileAspect.Speed * DeltaTime * projectilePosition.Forward();
 
             projectilePosition.Position = newPosition;
             projectilePosition.Rotation = newRotation;

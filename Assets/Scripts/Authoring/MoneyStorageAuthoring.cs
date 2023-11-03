@@ -17,6 +17,8 @@ namespace Authoring
                 {
                     CurrentMoney = authoring.StartingPriceAmmount
                 });
+
+                AddBuffer<AddMoneyElement>(entity);
             }
         }
     }

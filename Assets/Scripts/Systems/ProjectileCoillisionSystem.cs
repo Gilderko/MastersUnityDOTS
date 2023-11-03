@@ -12,8 +12,9 @@ public partial struct ProjectileCoillisionSystem : ISystem
 {
     private ComponentLookup<LocalTransform> _positionLookup;
     private ComponentLookup<ImpactComponent> _impactLookup;
+    private ComponentLookup<ProjectileConfigComponent> _projectileConfigLookup;
     private ComponentLookup<HealthComponent> _healthLookup;
-
+    
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -21,7 +22,8 @@ public partial struct ProjectileCoillisionSystem : ISystem
         state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>(true);
         _impactLookup = SystemAPI.GetComponentLookup<ImpactComponent>(true);
-        _healthLookup = SystemAPI.GetComponentLookup<HealthComponent>(false);
+        _projectileConfigLookup = SystemAPI.GetComponentLookup<ProjectileConfigComponent>(true);
+        _healthLookup = SystemAPI.GetComponentLookup<HealthComponent>(true);
     }
 
     [BurstCompile]
@@ -35,16 +37,18 @@ public partial struct ProjectileCoillisionSystem : ISystem
         var ecbBos = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
 
         _positionLookup.Update(ref state);
-        _healthLookup.Update(ref state);
+        _projectileConfigLookup.Update(ref state);
         _impactLookup.Update(ref state);
+        _healthLookup.Update(ref state);
 
         var simulation = SystemAPI.GetSingleton<SimulationSingleton>();
         
         var job = new ProjectileCollisionJob()
         {
             Projectiles = _impactLookup,
-            EnemiesHealth = _healthLookup,
+            ProjectileConfigs = _projectileConfigLookup,
             Positions = _positionLookup,
+            Healths = _healthLookup,
             ECB = ecbBos
         };
 
