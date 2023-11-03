@@ -20,10 +20,10 @@ namespace UnityMonoBehaviour.TowerPlacementConfig
             _spawnableTowers = _world.EntityManager.CreateEntityQuery(typeof(TowerRegistryEntry)
                 ).GetSingletonBuffer<TowerRegistryEntry>();
             
-            for (var i = 0; i < _spawnableTowers.Length; i++)
+            foreach (var spawnEntry in _spawnableTowers)
             {
                 var spawnButtons = Instantiate(_towerPlacementPrefab, transform);
-                spawnButtons.Initialize(_spawnableTowers[i].DummyPrefab, _spawnableTowers[i].Prefab);
+                spawnButtons.Initialize(spawnEntry.DummyPrefab);
             }
         }
     }

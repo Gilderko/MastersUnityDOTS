@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4770316398421589952}
+  - component: {fileID: -4641611284097597345}
   m_Layer: 0
   m_Name: BasicTowerDummy
   m_TagString: Untagged
@@ -32,6 +33,22 @@ Transform:
   - {fileID: 666713932692163394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-4641611284097597345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4492501371631685803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 579c72b11b2f43feb962b3ac5b9dc350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OriginalTowerPrefab: {fileID: 4492501371631685803, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
+    type: 3}
+  VisualChild: {fileID: 6331958193732740660}
+  TowerPrice: 30
 --- !u!1 &6331958193732740660
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,6 +60,7 @@ GameObject:
   - component: {fileID: 666713932692163394}
   - component: {fileID: 4507416551585578843}
   - component: {fileID: 7463573004885870129}
+  - component: {fileID: 2121463343100840403}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -115,3 +133,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2121463343100840403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6331958193732740660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b6467bcd530cd4d809fae70ea0ca9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}

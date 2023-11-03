@@ -24,7 +24,7 @@ namespace Authoring
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 var buffer = AddBuffer<TowerRegistryEntry>(entity);
 
-                AddComponent<TowerPlacementLayersComponent>(entity, new TowerPlacementLayersComponent()
+                AddComponent(entity, new TowerPlacementLayersComponent()
                 {
                     BelongsToMove = authoring.BelongsToMove,
                     CollidesWithMove = authoring.CollidesWithMove,
@@ -37,7 +37,6 @@ namespace Authoring
                 {
                     buffer.Add(new TowerRegistryEntry()
                     {
-                        Prefab = GetEntity(towerToAdd.TowerPrefab, TransformUsageFlags.Dynamic),
                         DummyPrefab = GetEntity(towerToAdd.DummyTowerPrefab, TransformUsageFlags.Dynamic)
                     });
                 }

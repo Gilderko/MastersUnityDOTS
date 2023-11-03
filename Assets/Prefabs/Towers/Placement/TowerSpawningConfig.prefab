@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Towers:
-  - TowerPrefab: {fileID: 4492501371631685803, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
+  - BuildPrice: 25
+    TowerPrefab: {fileID: 4492501371631685803, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
       type: 3}
     DummyTowerPrefab: {fileID: 4492501371631685803, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
       type: 3}
@@ -55,7 +56,7 @@ MonoBehaviour:
     Category02: 0
     Category03: 0
     Category04: 0
-    Category05: 1
+    Category05: 0
     Category06: 0
     Category07: 0
     Category08: 0
@@ -84,7 +85,7 @@ MonoBehaviour:
     Category31: 0
   CollidesWithPlacement:
     Category00: 0
-    Category01: 1
+    Category01: 0
     Category02: 0
     Category03: 0
     Category04: 0

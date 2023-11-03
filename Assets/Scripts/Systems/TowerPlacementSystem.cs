@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
+using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -27,7 +28,6 @@ namespace Systems
 
         protected override void OnStartRunning()
         {
-            base.OnStartRunning();
             _placementConfig = SystemAPI.GetSingleton<TowerPlacementLayersComponent>();
         }
 
@@ -65,16 +65,20 @@ namespace Systems
                 Filter = placementFilter,
                 End = ray.GetPoint(_camera.farClipPlane)
             };
-            
+
+            var currentColor = SystemAPI.GetComponentRW<URPMaterialPropertyBaseColor>(dummyTower.Visual);
             if(!physicsWorld.CastRay(inputPlace, out var placementHit))
             {  
                 // Turn it red
+                currentColor.ValueRW.Value = new float4(1f, 0f, 0f,0f);
             }
             else
             {
                 // Turn it green    
+                var moneyStorage = SystemAPI.GetSingletonRW<MoneyComponent>();
+                currentColor.ValueRW.Value = new float4(0f, 1f, 0f,0f);
                 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && dummyTower.BuildPrice < moneyStorage.ValueRO.CurrentMoney)
                 {
                     var placementHitLocalTransform = SystemAPI.GetComponent<LocalTransform>(placementHit.Entity);
             
@@ -82,7 +86,8 @@ namespace Systems
                     var transform = LocalTransform.Identity;
                     transform.Position = placementHitLocalTransform.Position + new float3(0f,2f,0f);
                     ecbBos.SetComponent(newTower, transform);
-            
+                    moneyStorage.ValueRW.CurrentMoney -= dummyTower.BuildPrice;
+                    
                     ecbBos.DestroyEntity(dummyTowerEntity);
                     return;
                 }
