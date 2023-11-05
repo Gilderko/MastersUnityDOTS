@@ -8,7 +8,6 @@ namespace Components.Aspects
         public readonly Entity Entity;
 
         private readonly RefRW<LocalTransform> _transform;
-        private readonly RefRW<LocalToWorld> _worldTransform;
         private readonly RefRO<TowerConfigAsset> _towerConfig;
         private readonly RefRW<TimerComponent> _timer;
         private readonly RefRO<TowerDataComponent> _towerDataComponent;
@@ -17,7 +16,7 @@ namespace Components.Aspects
         
         public TowerConfigAsset TowerConfig => _towerConfig.ValueRO;
 
-        public LocalToWorld WorldTransform => _worldTransform.ValueRO;
+        public LocalTransform Transform => _transform.ValueRO;
 
         public TimerComponent ProjectileTimerComponent => _timer.ValueRO;
 

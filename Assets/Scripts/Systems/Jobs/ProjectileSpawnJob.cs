@@ -29,7 +29,7 @@ namespace Systems.Jobs
             ref var towerConfig = ref towerAspect.TowerConfig.Config.Value;
             var closestHitCollector = new ClosestHitCollector<DistanceHit>(towerConfig.Range);
 
-            if (!PhysicsWorld.OverlapSphereCustom(towerAspect.WorldTransform.Position, towerConfig.Range, ref closestHitCollector, towerConfig.Filter))
+            if (!PhysicsWorld.OverlapSphereCustom(towerAspect.Transform.Position, towerConfig.Range, ref closestHitCollector, towerConfig.Filter))
             {
                 return;
             }
@@ -37,8 +37,10 @@ namespace Systems.Jobs
             towerAspect.ResetProjectileTimer();
 
             var entity = ECB.Instantiate(sortKey, towerAspect.TowerData.ProjectilePrefab);
-            ECB.SetComponent(sortKey, entity,
-                LocalTransform.FromMatrix(float4x4.LookAt(towerAspect.WorldTransform.Position, closestHitCollector.ClosestHit.Position, towerAspect.WorldTransform.Up)));
+            var transformComponent =
+                LocalTransform.FromMatrix(float4x4.LookAt(towerAspect.Transform.Position, closestHitCollector.ClosestHit.Position, towerAspect.Transform.Up()));
+            transformComponent.Position = towerAspect.Transform.Position;
+            ECB.SetComponent(sortKey, entity, transformComponent);
             ECB.AddComponent(sortKey, entity, new TargetComponent() { Value = closestHitCollector.ClosestHit.Entity });
         }
     }
