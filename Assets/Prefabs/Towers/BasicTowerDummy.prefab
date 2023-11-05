@@ -49,6 +49,7 @@ MonoBehaviour:
     type: 3}
   VisualChild: {fileID: 6331958193732740660}
   TowerPrice: 30
+  BuildRadius: 1
 --- !u!1 &6331958193732740660
 GameObject:
   m_ObjectHideFlags: 0

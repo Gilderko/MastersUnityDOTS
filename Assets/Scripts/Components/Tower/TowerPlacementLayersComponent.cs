@@ -10,5 +10,8 @@ namespace Components
         
         public PhysicsCategoryTags BelongsToMove;
         public PhysicsCategoryTags CollidesWithMove;
+        
+        public PhysicsCategoryTags BelongsToOverlap;
+        public PhysicsCategoryTags CollidesWithOverlap;
     }
 }

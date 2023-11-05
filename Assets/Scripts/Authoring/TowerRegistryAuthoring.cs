@@ -17,6 +17,9 @@ namespace Authoring
         public PhysicsCategoryTags BelongsToMove;
         public PhysicsCategoryTags CollidesWithMove;
         
+        public PhysicsCategoryTags BelongsToOverlap;
+        public PhysicsCategoryTags CollidesWithOverlap;
+        
         private class TowerRegistryAuthoringBaker : Baker<TowerRegistryAuthoring>
         {
             public override void Bake(TowerRegistryAuthoring authoring)
@@ -30,7 +33,10 @@ namespace Authoring
                     CollidesWithMove = authoring.CollidesWithMove,
                     
                     BelongsToPlacement = authoring.BelongsToPlacement,
-                    CollidesWithPlacement = authoring.CollidesWithPlacement
+                    CollidesWithPlacement = authoring.CollidesWithPlacement,
+                    
+                    BelongsToOverlap = authoring.BelongsToOverlap,
+                    CollidesWithOverlap = authoring.CollidesWithOverlap
                 });
                 
                 foreach (var towerToAdd in authoring.Towers)

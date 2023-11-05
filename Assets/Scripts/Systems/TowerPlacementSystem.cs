@@ -1,5 +1,6 @@
 ﻿using Components;
 using Components.Aspects;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -17,6 +18,10 @@ namespace Systems
     {
         private Camera _camera;
         private TowerPlacementLayersComponent _placementConfig;
+
+        private CollisionFilter _filterMove;
+        private CollisionFilter _filterPlace;
+        private CollisionFilter _filterOverlap;
         
         protected override void OnCreate()
         {
@@ -30,6 +35,18 @@ namespace Systems
         protected override void OnStartRunning()
         {
             _placementConfig = SystemAPI.GetSingleton<TowerPlacementLayersComponent>();
+            
+            _filterMove = CollisionFilter.Default;
+            _filterMove.BelongsTo = _placementConfig.BelongsToMove.Value;
+            _filterMove.CollidesWith = _placementConfig.CollidesWithMove.Value;
+
+            _filterPlace = CollisionFilter.Zero;
+            _filterPlace.BelongsTo = _placementConfig.BelongsToPlacement.Value;
+            _filterPlace.CollidesWith = _placementConfig.CollidesWithPlacement.Value;
+            
+            _filterOverlap = CollisionFilter.Zero;
+            _filterOverlap.BelongsTo = _placementConfig.BelongsToOverlap.Value;
+            _filterOverlap.CollidesWith = _placementConfig.CollidesWithOverlap.Value;
         }
 
         protected override void OnUpdate()
@@ -47,28 +64,42 @@ namespace Systems
             GenerateInputRays(out var inputPlace, out var inputMove);
 
             var currentColor = SystemAPI.GetComponentRW<URPMaterialPropertyBaseColor>(dummyTower.Visual);
-            if(!physicsWorld.CastRay(inputPlace, out var placementHit))
+            if (!physicsWorld.CastRay(inputPlace, out var placementHit))
             {  
                 currentColor.ValueRW.Value = new float4(1f, 0f, 0f,0f);
+                
+                if (Input.GetMouseButtonDown(0))
+                {
+                    ecbBos.DestroyEntity(dummyTowerEntity);
+                    return;
+                }
             }
             else
             {
                 var moneyStorageEntity = SystemAPI.GetSingletonEntity<MoneyComponent>();
                 var moneyStorage = SystemAPI.GetAspect<MoneyStorageAspect>(moneyStorageEntity);
-                currentColor.ValueRW.Value = new float4(0f, 1f, 0f,0f);
+
+                var distances = new NativeList<DistanceHit>(Allocator.Temp);
+                var placementHitLocalTransform = placementHit.Position;
                 
-                if (Input.GetMouseButtonDown(0) && dummyTower.BuildPrice < moneyStorage.CurrentMoney)
+                if (dummyTower.BuildPrice <= moneyStorage.CurrentMoney
+                    && !physicsWorld.OverlapSphere(placementHitLocalTransform + math.up(), dummyTower.BuildRadius, ref distances, _filterOverlap))
                 {
-                    var placementHitLocalTransform = SystemAPI.GetComponent<LocalTransform>(placementHit.Entity);
-            
-                    var newTower = ecbBos.Instantiate(dummyTower.TowerPrefab);
-                    var transform = LocalTransform.Identity;
-                    transform.Position = placementHitLocalTransform.Position + new float3(0f,2f,0f);
-                    ecbBos.SetComponent(newTower, transform);
-                    moneyStorage.AddMoneyElement(-dummyTower.BuildPrice);
-                    
-                    ecbBos.DestroyEntity(dummyTowerEntity);
-                    return;
+                    currentColor.ValueRW.Value = new float4(0f, 1f, 0f,0f);
+
+                    if (PlaceNewTower(ecbBos, dummyTower, placementHitLocalTransform, moneyStorage, dummyTowerEntity))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    currentColor.ValueRW.Value = new float4(1f, 0f, 0f,0f);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        ecbBos.DestroyEntity(dummyTowerEntity);
+                        return;
+                    }
                 }
             }
 
@@ -82,30 +113,40 @@ namespace Systems
             ecbBos.SetComponent(dummyTowerEntity, newTransform);
         }
 
+        private bool PlaceNewTower(EntityCommandBuffer ecbBos, TowerDummyComponent dummyTower, float3 placementHitLocalTransform, MoneyStorageAspect moneyStorage,
+            Entity dummyTowerEntity)
+        {
+            if (!Input.GetMouseButtonDown(0))
+            {
+                return false;
+            }
+            
+            var newTower = ecbBos.Instantiate(dummyTower.TowerPrefab);
+            var transform = LocalTransform.Identity;
+            transform.Position = placementHitLocalTransform + new float3(0f, 2f, 0f);
+            ecbBos.SetComponent(newTower, transform);
+            moneyStorage.AddMoneyElement(-dummyTower.BuildPrice);
+
+            ecbBos.DestroyEntity(dummyTowerEntity);
+            return true;
+        }
+
         private void GenerateInputRays(out RaycastInput inputPlace, out RaycastInput inputMove)
         {
             var screenPosition = Input.mousePosition;
             var ray = _camera.ScreenPointToRay(new Vector2(screenPosition.x, screenPosition.y));
-            
-            var moveFilter = CollisionFilter.Default;
-            moveFilter.BelongsTo = _placementConfig.BelongsToMove.Value;
-            moveFilter.CollidesWith = _placementConfig.CollidesWithMove.Value;
-
-            var placementFilter = CollisionFilter.Zero;
-            placementFilter.BelongsTo = _placementConfig.BelongsToPlacement.Value;
-            placementFilter.CollidesWith = _placementConfig.CollidesWithPlacement.Value;
                 
             inputMove= new RaycastInput()
             {
                 Start = ray.origin,
-                Filter = moveFilter,
+                Filter = _filterMove,
                 End = ray.GetPoint(_camera.farClipPlane)
             };
 
             inputPlace = new RaycastInput()
             {
                 Start = ray.origin,
-                Filter = placementFilter,
+                Filter = _filterPlace,
                 End = ray.GetPoint(_camera.farClipPlane)
             };
         }

@@ -9,6 +9,7 @@ namespace Authoring
         public GameObject OriginalTowerPrefab;
         public GameObject VisualChild;
         public int TowerPrice;
+        public float BuildRadius;
         
         private class DummyTowerBaker : Baker<DummyTowerAuthoring>
         {
@@ -21,7 +22,8 @@ namespace Authoring
                 {
                     TowerPrefab = GetEntity(authoring.OriginalTowerPrefab, TransformUsageFlags.Dynamic),
                     Visual = visual,
-                    BuildPrice = authoring.TowerPrice
+                    BuildPrice = authoring.TowerPrice,
+                    BuildRadius = authoring.BuildRadius
                 });
             }
         }
