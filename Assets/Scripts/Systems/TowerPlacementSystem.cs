@@ -60,19 +60,21 @@ namespace Systems
             }
 
             var dummyTower = SystemAPI.GetComponent<TowerDummyComponent>(dummyTowerEntity);
-            
             GenerateInputRays(out var inputPlace, out var inputMove);
+            
+            if (!physicsWorld.CastRay(inputMove, out var moveHit))
+            {
+                return;
+            }
+                
+            var newTransform = LocalTransform.Identity;
+            newTransform.Position = moveHit.Position + new float3(0f,1f,0f);
+            ecbBos.SetComponent(dummyTowerEntity, newTransform);
 
             var currentColor = SystemAPI.GetComponentRW<URPMaterialPropertyBaseColor>(dummyTower.Visual);
             if (!physicsWorld.CastRay(inputPlace, out var placementHit))
             {  
-                currentColor.ValueRW.Value = new float4(1f, 0f, 0f,0f);
-                
-                if (Input.GetMouseButtonDown(0))
-                {
-                    ecbBos.DestroyEntity(dummyTowerEntity);
-                    return;
-                }
+                HandleInvalidTowerPosition(currentColor, ecbBos, dummyTowerEntity);
             }
             else
             {
@@ -87,48 +89,41 @@ namespace Systems
                 {
                     currentColor.ValueRW.Value = new float4(0f, 1f, 0f,0f);
 
-                    if (PlaceNewTower(ecbBos, dummyTower, placementHitLocalTransform, moneyStorage, dummyTowerEntity))
-                    {
-                        return;
-                    }
+                    PlaceNewTower(ecbBos, dummyTower, placementHitLocalTransform, moneyStorage, dummyTowerEntity);
                 }
                 else
                 {
-                    currentColor.ValueRW.Value = new float4(1f, 0f, 0f,0f);
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        ecbBos.DestroyEntity(dummyTowerEntity);
-                        return;
-                    }
+                    HandleInvalidTowerPosition(currentColor, ecbBos, dummyTowerEntity);
                 }
             }
+        }
 
-            if (!physicsWorld.CastRay(inputMove, out var moveHit))
+        private static void HandleInvalidTowerPosition(RefRW<URPMaterialPropertyBaseColor> currentColor, EntityCommandBuffer ecbBos, Entity dummyTowerEntity)
+        {
+            currentColor.ValueRW.Value = new float4(1f, 0f, 0f, 0f);
+            if (!Input.GetMouseButtonDown(0))
             {
                 return;
             }
-                
-            var newTransform = LocalTransform.Identity;
-            newTransform.Position = moveHit.Position + new float3(0f,2f,0f);
-            ecbBos.SetComponent(dummyTowerEntity, newTransform);
+
+            ecbBos.DestroyEntity(dummyTowerEntity);
         }
 
-        private bool PlaceNewTower(EntityCommandBuffer ecbBos, TowerDummyComponent dummyTower, float3 placementHitLocalTransform, MoneyStorageAspect moneyStorage,
+        private void PlaceNewTower(EntityCommandBuffer ecbBos, TowerDummyComponent dummyTower, float3 placementHitLocalTransform, MoneyStorageAspect moneyStorage,
             Entity dummyTowerEntity)
         {
             if (!Input.GetMouseButtonDown(0))
             {
-                return false;
+                return;
             }
             
             var newTower = ecbBos.Instantiate(dummyTower.TowerPrefab);
             var transform = LocalTransform.Identity;
-            transform.Position = placementHitLocalTransform + new float3(0f, 2f, 0f);
+            transform.Position = placementHitLocalTransform + new float3(0f, 1f, 0f);
             ecbBos.SetComponent(newTower, transform);
             moneyStorage.AddMoneyElement(-dummyTower.BuildPrice);
 
             ecbBos.DestroyEntity(dummyTowerEntity);
-            return true;
         }
 
         private void GenerateInputRays(out RaycastInput inputPlace, out RaycastInput inputMove)
