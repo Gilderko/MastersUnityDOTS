@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Components;
 using Unity.Entities;
+using Unity.Physics;
 using Unity.Physics.Authoring;
 using UnityEngine;
-using UnityMonoBehaviour.TowerPlacementConfig;
+using UnityMonoBehaviour.TowerUI;
 
 namespace Authoring
 {
@@ -41,9 +42,35 @@ namespace Authoring
                 
                 foreach (var towerToAdd in authoring.Towers)
                 {
+                    BlobAssetReference<TowerConfigComponent> bar;
+                    using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
+                    {
+                        ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
+                        tc.Timer = towerToAdd.TowerPrefab.FireRate;
+                        tc.Range = towerToAdd.TowerPrefab.Range;
+                        
+                        var filter = CollisionFilter.Zero;
+                        filter.CollidesWith = towerToAdd.TowerPrefab.Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
+                        filter.BelongsTo = towerToAdd.TowerPrefab.Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
+                        
+                        tc.Filter = filter;
+                        tc.ProjectileDamage = towerToAdd.TowerPrefab.Projectile.Damage;
+                   
+                        bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
+                    }
+            
+                    AddBlobAsset(ref bar, out var _);
+                    
                     buffer.Add(new TowerRegistryEntry()
                     {
-                        DummyPrefab = GetEntity(towerToAdd.DummyTowerPrefab, TransformUsageFlags.Dynamic)
+                        TowerPrefab = GetEntity(towerToAdd.TowerPrefab, TransformUsageFlags.Dynamic),
+                        DummyPrefab = GetEntity(towerToAdd.DummyTowerPrefab, TransformUsageFlags.Dynamic),
+                        BuildRadius = towerToAdd.BuildRadius,
+                        BuildPrice = towerToAdd.BuildPrice,
+                        Buildable = towerToAdd.Buildable,
+                        Level = towerToAdd.Level,
+                        Type = towerToAdd.Type,
+                        Config = bar
                     });
                 }
             }

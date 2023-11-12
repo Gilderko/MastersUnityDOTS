@@ -8,7 +8,7 @@ namespace Authoring
 {
     public class TowerAuthoring : MonoBehaviour
     {
-        public GameObject Projectile;
+        public ProjectileAuthoring Projectile;
         public float FireRate;
         public float Range;
 
@@ -23,7 +23,7 @@ namespace Authoring
             
                 AddComponent(entity, new TowerDataComponent()
                 {
-                    ProjectilePrefab = GetEntity(authoring.Projectile, TransformUsageFlags.Dynamic)
+                    ProjectilePrefab = GetEntity(authoring.Projectile.gameObject, TransformUsageFlags.Dynamic)
                 });
                 AddComponent(entity,new TimerComponent()
                 {
@@ -37,6 +37,7 @@ namespace Authoring
                     tc.Timer = authoring.FireRate;
                     tc.Range = authoring.Range;
                     tc.Filter = filter;
+                    tc.ProjectileDamage = authoring.Projectile.Damage;
                    
                     bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
                 }

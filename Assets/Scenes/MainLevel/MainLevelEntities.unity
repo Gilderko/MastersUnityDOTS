@@ -715,6 +715,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1297431080670618945, guid: a93c098c96179d14daba95b2e2a48e1e,
+        type: 3}
+      propertyPath: Towers.Array.data[0].Buildable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5317521636203691006, guid: a93c098c96179d14daba95b2e2a48e1e,
         type: 3}
       propertyPath: m_LocalPosition.x

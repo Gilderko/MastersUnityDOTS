@@ -13,6 +13,7 @@ namespace Components
         public float Timer;                 
         public CollisionFilter Filter;      
         public float Range;
+        public float ProjectileDamage;
     }
 
     public struct TowerConfigAsset : IComponentData

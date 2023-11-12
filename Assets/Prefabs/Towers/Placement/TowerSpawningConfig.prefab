@@ -46,9 +46,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Towers:
   - BuildPrice: 25
-    TowerPrefab: {fileID: 4492501371631685803, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
+    BuildRadius: 0
+    Level: 0
+    Buildable: 0
+    Type: 0
+    TowerPrefab: {fileID: 8187548035295300220, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
       type: 3}
-    DummyTowerPrefab: {fileID: 4492501371631685803, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
+    DummyTowerPrefab: {fileID: -4641611284097597345, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
       type: 3}
   BelongsToPlacement:
     Category00: 0

@@ -1,9 +1,8 @@
 ﻿using Components;
 using Unity.Entities;
-using Unity.Physics.Authoring;
 using UnityEngine;
 
-namespace UnityMonoBehaviour.TowerPlacementConfig
+namespace UnityMonoBehaviour.TowerUI
 {
     public class TowerPlacementUIManager : MonoBehaviour
     {
@@ -22,8 +21,13 @@ namespace UnityMonoBehaviour.TowerPlacementConfig
             
             foreach (var spawnEntry in _spawnableTowers)
             {
+                if (!spawnEntry.Buildable)
+                {
+                    continue;
+                }
+                
                 var spawnButtons = Instantiate(_towerPlacementPrefab, transform);
-                spawnButtons.Initialize(spawnEntry.DummyPrefab);
+                spawnButtons.Initialize(spawnEntry);
             }
         }
     }
