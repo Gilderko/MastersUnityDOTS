@@ -65,12 +65,12 @@ namespace Systems
                 End = ray.GetPoint(_camera.farClipPlane)
             };
             
-            if (!physicsWorld.CastRay(inputMove, out var moveHit))
+            if (!physicsWorld.CastRay(inputMove, out var towerHit))
             {
                 return;
             }
 
-            var towerConfig = SystemAPI.GetComponent<TowerConfigAsset>(moveHit.Entity).Config.Value;
+            var towerConfig = SystemAPI.GetComponent<TowerConfigAsset>(towerHit.Entity).Config.Value;
 
             TowerRegistryEntry? currentTower = null;
             TowerRegistryEntry? currentTowerUpgrade = null;
@@ -92,7 +92,7 @@ namespace Systems
                 return;
             }
             
-            OnDisplayTowerUIEvent?.Invoke(moveHit.Entity, currentTower.Value, currentTowerUpgrade.Value);
+            OnDisplayTowerUIEvent?.Invoke(towerHit.Entity, currentTower.Value, currentTowerUpgrade.Value);
         }
     }
 }

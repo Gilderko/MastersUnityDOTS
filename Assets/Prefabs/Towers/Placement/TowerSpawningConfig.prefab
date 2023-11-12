@@ -47,12 +47,17 @@ MonoBehaviour:
   Towers:
   - BuildPrice: 25
     BuildRadius: 0
-    Level: 0
-    Buildable: 0
-    Type: 0
+    Buildable: 1
     TowerPrefab: {fileID: 8187548035295300220, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
       type: 3}
     DummyTowerPrefab: {fileID: -4641611284097597345, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
+      type: 3}
+  - BuildPrice: 45
+    BuildRadius: 0
+    Buildable: 0
+    TowerPrefab: {fileID: 784610265615917627, guid: 72780f9d1584afb4c96566788a831e95,
+      type: 3}
+    DummyTowerPrefab: {fileID: 6075966153496429200, guid: 6cb6bd4f87ba6da458b4f6d3fa1167b6,
       type: 3}
   BelongsToPlacement:
     Category00: 0

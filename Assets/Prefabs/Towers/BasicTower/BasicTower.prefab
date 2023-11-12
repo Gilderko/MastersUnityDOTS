@@ -50,6 +50,8 @@ MonoBehaviour:
     type: 3}
   FireRate: 0.5
   Range: 20
+  Level: 0
+  TowerType: 0
 --- !u!114 &3635978416017795724
 MonoBehaviour:
   m_ObjectHideFlags: 0

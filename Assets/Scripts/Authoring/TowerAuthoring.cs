@@ -19,9 +19,7 @@ namespace Authoring
             public override void Bake(TowerAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                var filter = CollisionFilter.Default;
-                filter.CollidesWith = authoring.Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
-                filter.BelongsTo = authoring.Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
+                
             
                 AddComponent(entity, new TowerDataComponent()
                 {
@@ -32,24 +30,38 @@ namespace Authoring
                     TimerValue = 0,
                 });
 
-                BlobAssetReference<TowerConfigComponent> bar;
-                using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
-                {
-                    ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
-                    tc.FireRate = authoring.FireRate;
-                    tc.FireRange = authoring.Range;
-                    tc.Filter = filter;
-                    tc.ProjectileDamage = authoring.Projectile.Damage;
-                   
-                    bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
-                }
-            
+                var bar = authoring.GenerateTowerBlobAsset();
+
                 AddBlobAsset(ref bar, out var _);
                 AddComponent(entity, new TowerConfigAsset()
                 {
                     Config = bar
                 });
-            } 
+            }
+        }
+        
+        public BlobAssetReference<TowerConfigComponent> GenerateTowerBlobAsset()
+        {
+            var filter = CollisionFilter.Default;
+            filter.CollidesWith = Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
+            filter.BelongsTo = Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
+            
+            BlobAssetReference<TowerConfigComponent> bar;
+            using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
+            {
+                ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
+                tc.FireRate = FireRate;
+                tc.FireRange = Range;
+                tc.Filter = filter;
+
+                tc.ProjectileDamage = Projectile.Damage;
+                tc.TowerType = TowerType;
+                tc.Level = Level;
+
+                bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
+            }
+
+            return bar;
         }
     }
 }

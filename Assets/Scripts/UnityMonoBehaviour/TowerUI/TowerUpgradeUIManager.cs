@@ -16,28 +16,20 @@ namespace UnityMonoBehaviour.TowerUI
         
         private World _world;
         private TowerUpgradesSystem _towerUpgradesSystem;
+        private Entity _moneyStorageEntity;
 
         private void Start()
         {
             _world = World.DefaultGameObjectInjectionWorld;
-            _towerUpgradesSystem = _world.EntityManager.CreateEntityQuery(typeof(TowerUpgradesSystem)
-            ).GetSingleton<TowerUpgradesSystem>();
-
+            _towerUpgradesSystem = _world.GetExistingSystemManaged<TowerUpgradesSystem>();
+            _moneyStorageEntity = _world.EntityManager.CreateEntityQuery(typeof(MoneyComponent))
+                .GetSingletonEntity();
+            
             if (_towerUpgradesSystem == null)
             {
                 return;
             }
             
-            _towerUpgradesSystem.OnDisplayTowerUIEvent += DisplayTowerUpgradeUI;
-        }
-
-        private void OnEnable()
-        {
-            if (_world is not { IsCreated: true } || _towerUpgradesSystem == null)
-            {
-                return;
-            }
-
             _towerUpgradesSystem.OnDisplayTowerUIEvent += DisplayTowerUpgradeUI;
         }
 
@@ -67,11 +59,23 @@ namespace UnityMonoBehaviour.TowerUI
 
         private void ReplaceTowerCallback(Entity towerEntity, TowerRegistryEntry upgradeTower)
         {
+            var currentMoney = _world.EntityManager.GetComponentData<MoneyComponent>(_moneyStorageEntity);
+            if (currentMoney.CurrentMoney <= upgradeTower.BuildPrice)
+            {
+                return;
+            }
+            
             var positionOld = _world.EntityManager.GetComponentData<LocalTransform>(towerEntity);
             _world.EntityManager.DestroyEntity(towerEntity);
             
             var upgradedTower = _world.EntityManager.Instantiate(upgradeTower.TowerPrefab);
             _world.EntityManager.SetComponentData(upgradedTower, positionOld);
+            _world.EntityManager.SetComponentData(_moneyStorageEntity, new MoneyComponent()
+            {
+                CurrentMoney = currentMoney.CurrentMoney - upgradeTower.BuildPrice
+            });
+
+            CloseUICallback();
         }
     }
 }

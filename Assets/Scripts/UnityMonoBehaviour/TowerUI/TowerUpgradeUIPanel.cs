@@ -30,7 +30,7 @@ namespace UnityMonoBehaviour.TowerUI
             _upgradeTowerState = nextTower;
 
             _towerName.text = $"{currentTower.Config.Value.TowerType} Lvl {currentTower.Config.Value.Level}";
-            _damageText.text = $"Damage: {currentTower}";
+            _damageText.text = $"Damage: {currentTower.Config.Value.ProjectileDamage}";
             _attSpeedText.text = $"Attack speed: {currentTower.Config.Value.FireRate}";
             _attRangeText.text = $"Attack range: {currentTower.Config.Value.FireRange}";
             

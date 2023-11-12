@@ -42,25 +42,7 @@ namespace Authoring
                 
                 foreach (var towerToAdd in authoring.Towers)
                 {
-                    BlobAssetReference<TowerConfigComponent> bar;
-                    using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
-                    {
-                        ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
-                        tc.FireRate = towerToAdd.TowerPrefab.FireRate;
-                        tc.FireRange = towerToAdd.TowerPrefab.Range;
-                        
-                        var filter = CollisionFilter.Zero;
-                        filter.CollidesWith = towerToAdd.TowerPrefab.Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
-                        filter.BelongsTo = towerToAdd.TowerPrefab.Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
-                        
-                        tc.Filter = filter;
-                        tc.ProjectileDamage = towerToAdd.TowerPrefab.Projectile.Damage;
-                        tc.TowerType = towerToAdd.TowerPrefab.TowerType;
-                        tc.Level = towerToAdd.TowerPrefab.Level;
-                   
-                        bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
-                    }
-            
+                    var bar = towerToAdd.TowerPrefab.GenerateTowerBlobAsset();
                     AddBlobAsset(ref bar, out var _);
                     
                     buffer.Add(new TowerRegistryEntry()
