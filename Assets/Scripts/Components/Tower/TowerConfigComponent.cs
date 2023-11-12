@@ -10,9 +10,9 @@ namespace Components
     
     public struct TowerConfigComponent
     {
-        public float Timer;                 
+        public float FireRate;                 
         public CollisionFilter Filter;      
-        public float Range;
+        public float FireRange;
         public float ProjectileDamage;
     }
 

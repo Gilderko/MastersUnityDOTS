@@ -27,9 +27,9 @@ namespace Systems.Jobs
             }
 
             ref var towerConfig = ref towerAspect.TowerConfig.Config.Value;
-            var closestHitCollector = new ClosestHitCollector<DistanceHit>(towerConfig.Range);
+            var closestHitCollector = new ClosestHitCollector<DistanceHit>(towerConfig.FireRange);
 
-            if (!PhysicsWorld.OverlapSphereCustom(towerAspect.Transform.Position, towerConfig.Range, ref closestHitCollector, towerConfig.Filter))
+            if (!PhysicsWorld.OverlapSphereCustom(towerAspect.Transform.Position, towerConfig.FireRange, ref closestHitCollector, towerConfig.Filter))
             {
                 return;
             }

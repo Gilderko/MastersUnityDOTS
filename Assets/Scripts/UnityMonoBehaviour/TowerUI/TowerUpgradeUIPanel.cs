@@ -31,17 +31,20 @@ namespace UnityMonoBehaviour.TowerUI
 
             _towerName.text = $"{currentTower.Type} Lvl {currentTower.Level}";
             _damageText.text = $"Damage: {currentTower}";
+            _attSpeedText.text = $"Attack speed: {currentTower.Config.Value.FireRate}";
+            _attRangeText.text = $"Attack range: {currentTower.Config.Value.FireRange}";
             
+            _upgradeText.text = $"Upgrade: {nextTower.BuildPrice} gold";
             gameObject.SetActive(true);
         }
 
-        public void SetCallbacks(Action closeUICallback, Action<TowerRegistryEntry> replaceTowerCallback)
+        public void SetCallbacks(Action closeUICallback, Action<Entity,TowerRegistryEntry> replaceTowerCallback)
         {
             _cancelUIButton.onClick.RemoveAllListeners();
             _upgradeTowerButton.onClick.RemoveAllListeners();
             
             _cancelUIButton.onClick.AddListener(() => closeUICallback());
-            _upgradeTowerButton.onClick.AddListener(() => replaceTowerCallback(_upgradeTowerState));
+            _upgradeTowerButton.onClick.AddListener(() => replaceTowerCallback(_currentEntity ,_upgradeTowerState));
         }
     }
 }

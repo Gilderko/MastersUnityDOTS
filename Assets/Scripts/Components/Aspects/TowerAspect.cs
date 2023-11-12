@@ -27,7 +27,7 @@ namespace Components.Aspects
 
         public void ResetProjectileTimer()
         {
-            _timer.ValueRW.TimerValue = TowerConfig.Config.Value.Timer;
+            _timer.ValueRW.TimerValue = TowerConfig.Config.Value.FireRate;
         }
     }
 }

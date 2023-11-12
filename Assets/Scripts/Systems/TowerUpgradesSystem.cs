@@ -13,7 +13,7 @@ namespace Systems
     [UpdateAfter(typeof(PhysicsSystemGroup))]
     public partial class TowerUpgradesSystem : SystemBase
     {
-        public event Action<Entity, TowerRegistryEntry, TowerRegistryEntry, TowerDataComponent, TowerDataComponent> OnDisplayTowerUIEvent;
+        public event Action<Entity, TowerRegistryEntry, TowerRegistryEntry> OnDisplayTowerUIEvent;
         
         private NativeParallelMultiHashMap<int, TowerRegistryEntry> _towerLevels; 
         

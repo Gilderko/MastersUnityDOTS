@@ -34,8 +34,8 @@ namespace Authoring
                 using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
                 {
                     ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
-                    tc.Timer = authoring.FireRate;
-                    tc.Range = authoring.Range;
+                    tc.FireRate = authoring.FireRate;
+                    tc.FireRange = authoring.Range;
                     tc.Filter = filter;
                     tc.ProjectileDamage = authoring.Projectile.Damage;
                    

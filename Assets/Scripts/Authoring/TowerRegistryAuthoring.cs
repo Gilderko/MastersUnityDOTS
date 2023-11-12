@@ -46,8 +46,8 @@ namespace Authoring
                     using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
                     {
                         ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
-                        tc.Timer = towerToAdd.TowerPrefab.FireRate;
-                        tc.Range = towerToAdd.TowerPrefab.Range;
+                        tc.FireRate = towerToAdd.TowerPrefab.FireRate;
+                        tc.FireRange = towerToAdd.TowerPrefab.Range;
                         
                         var filter = CollisionFilter.Zero;
                         filter.CollidesWith = towerToAdd.TowerPrefab.Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;

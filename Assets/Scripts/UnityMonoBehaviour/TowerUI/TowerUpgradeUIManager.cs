@@ -15,7 +15,6 @@ namespace UnityMonoBehaviour.TowerUI
         private TowerUpgradeUIPanel _currentTowerUpgradePanel;
         
         private World _world;
-        private Entity _currentTower;
         private TowerUpgradesSystem _towerUpgradesSystem;
 
         private void Start()
@@ -34,7 +33,7 @@ namespace UnityMonoBehaviour.TowerUI
 
         private void OnEnable()
         {
-            if (_world == null || !_world.IsCreated || _towerUpgradesSystem == null)
+            if (_world is not { IsCreated: true } || _towerUpgradesSystem == null)
             {
                 return;
             }
@@ -47,13 +46,11 @@ namespace UnityMonoBehaviour.TowerUI
             _towerUpgradesSystem.OnDisplayTowerUIEvent -= DisplayTowerUpgradeUI;
         }
 
-        private void DisplayTowerUpgradeUI(Entity towerEntity, TowerRegistryEntry currentTower, TowerRegistryEntry towerUpgrade,
-            TowerDataComponent currentTowerSpecs, TowerDataComponent upgradeTowerSpecs)
+        private void DisplayTowerUpgradeUI(Entity towerEntity, TowerRegistryEntry currentTower, TowerRegistryEntry towerUpgrade)
         {
             // Create UI element if it doesnt exist yet
             // change its content to correspond with entity
             // add 2 callbacks one to close UI and one to upgrade tower
-            _currentTower = towerEntity;
             if (_currentTowerUpgradePanel == null)
             {
                 _currentTowerUpgradePanel = Instantiate(_towerUpgradePrefab);
@@ -68,13 +65,13 @@ namespace UnityMonoBehaviour.TowerUI
             _currentTowerUpgradePanel.gameObject.SetActive(false);
         }
 
-        private void ReplaceTowerCallback(TowerRegistryEntry upgradeTower)
+        private void ReplaceTowerCallback(Entity towerEntity, TowerRegistryEntry upgradeTower)
         {
-            var positionOld = _world.EntityManager.GetComponentData<LocalTransform>(_currentTower);
-            _world.EntityManager.DestroyEntity(_currentTower);
+            var positionOld = _world.EntityManager.GetComponentData<LocalTransform>(towerEntity);
+            _world.EntityManager.DestroyEntity(towerEntity);
             
             var upgradedTower = _world.EntityManager.Instantiate(upgradeTower.TowerPrefab);
-            _world.EntityManager.SetComponentData<LocalTransform>(upgradedTower, positionOld);
+            _world.EntityManager.SetComponentData(upgradedTower, positionOld);
         }
     }
 }
