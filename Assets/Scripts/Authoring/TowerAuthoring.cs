@@ -11,6 +11,8 @@ namespace Authoring
         public ProjectileAuthoring Projectile;
         public float FireRate;
         public float Range;
+        public int Level = 0;
+        public TowerType TowerType = TowerType.Normal;
 
         public class Baker : Baker<TowerAuthoring>
         {

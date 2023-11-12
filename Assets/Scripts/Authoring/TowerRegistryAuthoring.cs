@@ -55,6 +55,8 @@ namespace Authoring
                         
                         tc.Filter = filter;
                         tc.ProjectileDamage = towerToAdd.TowerPrefab.Projectile.Damage;
+                        tc.TowerType = towerToAdd.TowerPrefab.TowerType;
+                        tc.Level = towerToAdd.TowerPrefab.Level;
                    
                         bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
                     }
@@ -68,8 +70,6 @@ namespace Authoring
                         BuildRadius = towerToAdd.BuildRadius,
                         BuildPrice = towerToAdd.BuildPrice,
                         Buildable = towerToAdd.Buildable,
-                        Level = towerToAdd.Level,
-                        Type = towerToAdd.Type,
                         Config = bar
                     });
                 }

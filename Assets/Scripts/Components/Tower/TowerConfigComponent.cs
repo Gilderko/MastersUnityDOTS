@@ -14,6 +14,8 @@ namespace Components
         public CollisionFilter Filter;      
         public float FireRange;
         public float ProjectileDamage;
+        public int Level;
+        public TowerType TowerType;
     }
 
     public struct TowerConfigAsset : IComponentData

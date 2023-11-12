@@ -2,7 +2,6 @@
 using Components;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using UnityEngine;
@@ -37,7 +36,7 @@ namespace Systems
             
             foreach (var tower in towers)
             {
-                _towerLevels.Add((int) tower.Type, tower);
+                _towerLevels.Add((int) tower.Config.Value.TowerType, tower);
             }
             
             // Get the layers config
@@ -70,8 +69,30 @@ namespace Systems
             {
                 return;
             }
+
+            var towerConfig = SystemAPI.GetComponent<TowerConfigAsset>(moveHit.Entity).Config.Value;
+
+            TowerRegistryEntry? currentTower = null;
+            TowerRegistryEntry? currentTowerUpgrade = null;
+            foreach (var towerRegEntry in _towerLevels.GetValuesForKey((int) towerConfig.TowerType))
+            {
+                if (towerRegEntry.Config.Value.Level == towerConfig.Level)
+                {
+                    currentTower = towerRegEntry;
+                }
+                
+                if (towerRegEntry.Config.Value.Level == towerConfig.Level + 1)
+                {
+                    currentTowerUpgrade = towerRegEntry;
+                }
+            }
+
+            if (!currentTower.HasValue || !currentTowerUpgrade.HasValue)
+            {
+                return;
+            }
             
-            // OnDisplayTowerUIEvent?.Invoke(moveHit.Entity);
+            OnDisplayTowerUIEvent?.Invoke(moveHit.Entity, currentTower.Value, currentTowerUpgrade.Value);
         }
     }
 }
