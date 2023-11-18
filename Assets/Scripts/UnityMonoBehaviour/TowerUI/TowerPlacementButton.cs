@@ -1,4 +1,5 @@
 ﻿using Components;
+using TMPro;
 using Unity.Entities;
 using UnityEngine;
 
@@ -6,6 +7,11 @@ namespace UnityMonoBehaviour.TowerUI
 {
     public class TowerPlacementButton : MonoBehaviour
     {
+        [SerializeField] private TextMeshProUGUI TowerName;
+        [SerializeField] private TextMeshProUGUI TowerAttackSpeed;
+        [SerializeField] private TextMeshProUGUI TowerDamage;
+        [SerializeField] private TextMeshProUGUI TowerPrice;
+        
         private World _world;
 
         private TowerRegistryEntry _towerPrefabEntry;
@@ -14,6 +20,11 @@ namespace UnityMonoBehaviour.TowerUI
         {
             _towerPrefabEntry = towerEntry;
             _world = World.DefaultGameObjectInjectionWorld;
+
+            TowerName.text = $"{towerEntry.Config.Value.TowerType}";
+            TowerAttackSpeed.text = $"Attack speed: {towerEntry.Config.Value.FireRate}";
+            TowerDamage.text = $"Tower damage: {towerEntry.Config.Value.ProjectileDamage}";
+            TowerPrice.text = $"Price: {towerEntry.BuildPrice}g";
         }
         
         public void ButtonClicked()
