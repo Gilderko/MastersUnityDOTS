@@ -34,7 +34,7 @@ namespace UnityMonoBehaviour.TowerUI
             _attSpeedText.text = $"Attack speed: {currentTower.Config.Value.FireRate}";
             _attRangeText.text = $"Attack range: {currentTower.Config.Value.FireRange}";
             
-            _upgradeText.text = $"Upgrade: {nextTower.BuildPrice} gold";
+            _upgradeText.text = $"{nextTower.BuildPrice}g";
             gameObject.SetActive(true);
         }
 

@@ -242,8 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 10
-  ImpactVFX: {fileID: 1606137116517001935, guid: 9b0c912246fb2c84ead6325b5cf1184a,
-    type: 3}
+  ImpactVFX: {fileID: 1505610324796538, guid: 1e355725d225f5b4ab56d513fd54add1, type: 3}
   MaxLifeSeconds: 5
   Damage: 10
   ProjectileType: 0

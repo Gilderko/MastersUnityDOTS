@@ -73,7 +73,7 @@ namespace Systems.Jobs
             
             // Spawn VFX
             var impactEntity = ECB.Instantiate(Projectiles[projectile].VFXImpactPrefab);
-            ECB.SetComponent(impactEntity, LocalTransform.FromPosition(Positions[enemy].Position));
+            ECB.SetComponent(impactEntity, LocalTransform.FromPosition(Positions[enemy].Position + math.up() * 0.5f));
             
             ECB.DestroyEntity(projectile);
         }
