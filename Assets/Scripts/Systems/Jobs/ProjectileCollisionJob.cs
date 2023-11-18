@@ -3,6 +3,7 @@ using Components.Enemy;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 
@@ -17,7 +18,8 @@ namespace Systems.Jobs
         [ReadOnly] public ComponentLookup<HealthComponent> Healths;
         
         public EntityCommandBuffer ECB;
-        
+        public PhysicsWorldSingleton PhysicsWorld;
+
         [BurstCompile]
         public void Execute(TriggerEvent triggerEvent)
         {
@@ -42,11 +44,30 @@ namespace Systems.Jobs
             }
             
             // Damage enemy
-            var damageToDeal = ProjectileConfigs[projectile].Config.Value.Damage;
-            ECB.AppendToBuffer(enemy, new HitDataComponent()
+            var projectileConfig = ProjectileConfigs[projectile].Config.Value;
+            var damageToDeal = projectileConfig.Damage;
+            var projectilePosition = Positions[projectile].Position;
+            if (projectileConfig.ProjectileType == ProjectileType.Explosive)
             {
-                DamageToTake = damageToDeal
-            });
+                var distances = new NativeList<DistanceHit>(Allocator.Temp);
+                if (PhysicsWorld.OverlapSphere(projectilePosition, projectileConfig.ExplosiveDamageRadius, ref distances, projectileConfig.CollisionFilter))
+                {
+                    foreach (var hit in distances)
+                    {
+                        ECB.AppendToBuffer(hit.Entity, new HitDataComponent()
+                        {
+                            DamageToTake = damageToDeal
+                        });
+                    }
+                }
+            }
+            else
+            {
+                ECB.AppendToBuffer(enemy, new HitDataComponent()
+                {
+                    DamageToTake = damageToDeal
+                });
+            }
             
             // Spawn VFX
             var impactEntity = ECB.Instantiate(Projectiles[projectile].VFXImpactPrefab);

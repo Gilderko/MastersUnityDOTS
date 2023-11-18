@@ -42,7 +42,7 @@ namespace Authoring
         
         public BlobAssetReference<TowerConfigComponent> GenerateTowerBlobAsset()
         {
-            var filter = CollisionFilter.Default;
+            var filter = CollisionFilter.Zero;
             filter.CollidesWith = Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
             filter.BelongsTo = Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
             

@@ -246,6 +246,8 @@ MonoBehaviour:
     type: 3}
   MaxLifeSeconds: 5
   Damage: 10
+  ProjectileType: 0
+  ExplosiveDamageRadius: 5
 --- !u!1 &5545923683252469821
 GameObject:
   m_ObjectHideFlags: 0

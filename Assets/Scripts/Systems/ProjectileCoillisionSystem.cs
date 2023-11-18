@@ -18,6 +18,7 @@ public partial struct ProjectileCoillisionSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        state.RequireForUpdate<PhysicsWorldSingleton>();
         state.RequireForUpdate<SimulationSingleton>();
         state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>(true);
@@ -35,7 +36,8 @@ public partial struct ProjectileCoillisionSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecbBos = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-
+        var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+        
         _positionLookup.Update(ref state);
         _projectileConfigLookup.Update(ref state);
         _impactLookup.Update(ref state);
@@ -45,6 +47,7 @@ public partial struct ProjectileCoillisionSystem : ISystem
         
         var job = new ProjectileCollisionJob()
         {
+            PhysicsWorld = physicsWorld,
             Projectiles = _impactLookup,
             ProjectileConfigs = _projectileConfigLookup,
             Positions = _positionLookup,

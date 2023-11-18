@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Physics;
 
 namespace Components
 {
@@ -11,5 +12,8 @@ namespace Components
     {
         public int Damage;
         public float Speed;
+        public ProjectileType ProjectileType;
+        public float ExplosiveDamageRadius;
+        public CollisionFilter CollisionFilter;
     }
 }
