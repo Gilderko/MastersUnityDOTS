@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2464371482417669619}
   - component: {fileID: 4534883387411157596}
   m_Layer: 0
-  m_Name: BasicProjectile
+  m_Name: ExplosiveProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
     type: 3}
   MaxLifeSeconds: 5
   Damage: 10
-  ProjectileType: 0
+  ProjectileType: 1
   ExplosiveDamageRadius: 5
 --- !u!1 &5545923683252469821
 GameObject:

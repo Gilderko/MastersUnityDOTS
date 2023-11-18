@@ -8,6 +8,8 @@ namespace Authoring
 {
     public class TowerAuthoring : MonoBehaviour
     {
+        public GameObject TowerHead;
+        
         public ProjectileAuthoring Projectile;
         public float FireRate;
         public float Range;
@@ -19,7 +21,6 @@ namespace Authoring
             public override void Bake(TowerAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                
             
                 AddComponent(entity, new TowerDataComponent()
                 {
@@ -27,7 +28,7 @@ namespace Authoring
                 });
                 AddComponent(entity,new TimerComponent()
                 {
-                    TimerValue = 0,
+                    TimerValue = 1,
                 });
 
                 var bar = authoring.GenerateTowerBlobAsset();
@@ -36,6 +37,11 @@ namespace Authoring
                 AddComponent(entity, new TowerConfigAsset()
                 {
                     Config = bar
+                });
+                
+                AddComponent(entity, new TowerHeadComponent()
+                {
+                    TowerHead = GetEntity(authoring.TowerHead, TransformUsageFlags.Dynamic)
                 });
             }
         }

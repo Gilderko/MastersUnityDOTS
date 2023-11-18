@@ -7,16 +7,16 @@ namespace Components.Aspects
     {
         public readonly Entity Entity;
 
-        private readonly RefRW<LocalTransform> _transform;
         private readonly RefRO<TowerConfigAsset> _towerConfig;
         private readonly RefRW<TimerComponent> _timer;
         private readonly RefRO<TowerDataComponent> _towerDataComponent;
+        private readonly RefRO<TowerHeadComponent> _towerHeadComponent;
 
+        public TowerHeadComponent TowerHead => _towerHeadComponent.ValueRO;
+        
         public TowerDataComponent TowerData => _towerDataComponent.ValueRO;
         
         public TowerConfigAsset TowerConfig => _towerConfig.ValueRO;
-
-        public LocalTransform Transform => _transform.ValueRO;
 
         public TimerComponent ProjectileTimerComponent => _timer.ValueRO;
 

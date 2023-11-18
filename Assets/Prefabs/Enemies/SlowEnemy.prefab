@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0e26ae58a18938a49855dbc943c6ff9d, type: 2}
+    - target: {fileID: 2044330182023539042, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 466c412d8c7e48c4792f481f6b4cea35, type: 2}
     - target: {fileID: 6948124617389802610, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
         type: 3}
       propertyPath: EnemyReward

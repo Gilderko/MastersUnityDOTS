@@ -60,6 +60,8 @@ namespace Systems.Jobs
                         });
                     }
                 }
+
+                distances.Dispose();
             }
             else
             {

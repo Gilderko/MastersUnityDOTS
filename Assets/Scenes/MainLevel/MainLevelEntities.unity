@@ -190,12 +190,12 @@ MonoBehaviour:
   - {fileID: 1464644592}
   LevelInfo:
     _waves:
-    - _maxSpawnedAtOnce: 5
-      _timeBetweenSpawns: 2
+    - _maxSpawnedAtOnce: 10
+      _timeBetweenSpawns: 1
       _enemyTypesToSpawn:
       - _entityToSpawn: {fileID: 8440122566071221241, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
           type: 3}
-        _countToSpawn: 2
+        _countToSpawn: 55
         _vfxToSpawn: {fileID: 0}
         _particleSystemSpawnModifier:
           _positionSpawnOffset: {x: 0, y: 0, z: 0}
@@ -204,19 +204,19 @@ MonoBehaviour:
         _sfxToSpawn: {fileID: 0}
       - _entityToSpawn: {fileID: 2485626127971917065, guid: b66c5bf4bb4a69242b863d11b080480b,
           type: 3}
-        _countToSpawn: 1
+        _countToSpawn: 100
         _vfxToSpawn: {fileID: 0}
         _particleSystemSpawnModifier:
           _positionSpawnOffset: {x: 0, y: 0, z: 0}
           _scaleMultiplication: 1
           _rotationSpawnOffset: {x: -90, y: 0, z: 0}
         _sfxToSpawn: {fileID: 0}
-    - _maxSpawnedAtOnce: 2
-      _timeBetweenSpawns: 5
+    - _maxSpawnedAtOnce: 40
+      _timeBetweenSpawns: 0.25
       _enemyTypesToSpawn:
       - _entityToSpawn: {fileID: 401298767144520878, guid: 8c91eefced91c9649bddb24b3ad528ad,
           type: 3}
-        _countToSpawn: 2
+        _countToSpawn: 65
         _vfxToSpawn: {fileID: 0}
         _particleSystemSpawnModifier:
           _positionSpawnOffset: {x: 0, y: 0, z: 0}
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c492d89cbef4184ad83f86979c76f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingPriceAmmount: 100
+  StartingPriceAmmount: 300
 --- !u!4 &1548713082
 Transform:
   m_ObjectHideFlags: 0
@@ -528,7 +528,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.00000004470348, w: 1}
   m_LocalPosition: {x: 0, y: -10, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 60, y: 20, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

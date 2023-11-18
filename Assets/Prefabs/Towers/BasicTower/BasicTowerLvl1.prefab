@@ -76,7 +76,7 @@ PrefabInstance:
     - target: {fileID: 8187548035295300220, guid: f5e8eb551c9a63f4c9eca6a59ef2ffd3,
         type: 3}
       propertyPath: FireRate
-      value: 0.3
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

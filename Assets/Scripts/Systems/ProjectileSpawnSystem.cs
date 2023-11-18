@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
+using Unity.Transforms;
 
 namespace Systems
 {
@@ -11,11 +12,16 @@ namespace Systems
     [BurstCompile]
     public partial struct ProjectileSpawnSystem : ISystem
     {
+        private ComponentLookup<LocalTransform> _positionLookup;
+        private ComponentLookup<LocalToWorld> _worldPosLookup;
+        
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PhysicsWorldSingleton>();
             state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>(false);
+            _worldPosLookup = SystemAPI.GetComponentLookup<LocalToWorld>(true);
         }
         
         [BurstCompile]
@@ -25,11 +31,16 @@ namespace Systems
             var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
             var deltaTime = SystemAPI.Time.DeltaTime;
 
+            _positionLookup.Update(ref state);
+            _worldPosLookup.Update(ref state);
+            
             var spawnProjectileJob = new ProjectileSpawnJob()
             {
                 ECB = ecbBos.AsParallelWriter(),
                 DeltaTime = deltaTime,
-                PhysicsWorld = physicsWorld
+                PhysicsWorld = physicsWorld,
+                TransformLookup = _positionLookup,
+                WorldLookup = _worldPosLookup
             };
 
             spawnProjectileJob.ScheduleParallel();

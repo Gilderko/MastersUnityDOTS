@@ -59,6 +59,20 @@ MonoBehaviour:
       type: 3}
     DummyTowerPrefab: {fileID: 6075966153496429200, guid: 6cb6bd4f87ba6da458b4f6d3fa1167b6,
       type: 3}
+  - BuildPrice: 50
+    BuildRadius: 0
+    Buildable: 1
+    TowerPrefab: {fileID: 8187548035295300220, guid: 302f2e046403fd84d8c86b41a9d8a549,
+      type: 3}
+    DummyTowerPrefab: {fileID: -4641611284097597345, guid: 614a63f220980514a9c9332f26db6b99,
+      type: 3}
+  - BuildPrice: 35
+    BuildRadius: 0
+    Buildable: 1
+    TowerPrefab: {fileID: 8187548035295300220, guid: 93d540c315b6c1a49b4029297d094010,
+      type: 3}
+    DummyTowerPrefab: {fileID: -4641611284097597345, guid: f2c6627cdb2c51c419036b0a0a27971a,
+      type: 3}
   BelongsToPlacement:
     Category00: 0
     Category01: 1
