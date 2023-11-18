@@ -11,7 +11,8 @@ namespace UnityMonoBehaviour.TowerUI
     public class TowerUpgradeUIManager : MonoBehaviour
     {
         [SerializeField] private TowerUpgradeUIPanel _towerUpgradePrefab;
-
+        [SerializeField] private float _panelYOffset = 10.0f;
+        
         private TowerUpgradeUIPanel _currentTowerUpgradePanel;
         
         private World _world;
@@ -48,6 +49,8 @@ namespace UnityMonoBehaviour.TowerUI
                 _currentTowerUpgradePanel = Instantiate(_towerUpgradePrefab);
             }
 
+            var transform = _world.EntityManager.GetComponentData<LocalTransform>(towerEntity);
+            _currentTowerUpgradePanel.transform.position = (Vector3) transform.Position + Vector3.up * _panelYOffset;
             _currentTowerUpgradePanel.Display(towerEntity, currentTower, towerUpgrade);
             _currentTowerUpgradePanel.SetCallbacks(CloseUICallback, ReplaceTowerCallback);
         }
