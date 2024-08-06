@@ -5,6 +5,7 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Systems
 {
@@ -17,6 +18,7 @@ namespace Systems
         private NativeParallelMultiHashMap<int, TowerRegistryEntry> _towerLevels; 
         
         private Camera _camera;
+        private EventSystem _eventSystem;
         private TowerPlacementLayersComponent _placementConfig;
         private CollisionFilter _filterTower;
 
@@ -24,19 +26,16 @@ namespace Systems
         {
             CheckedStateRef.RequireForUpdate<PhysicsWorldSingleton>();
             CheckedStateRef.RequireForUpdate<TowerPlacementLayersComponent>();
-            
-            _camera = Camera.main;
         }
 
         protected override void OnStartRunning()
         {
-            // Get the registry + create hashmap
             var towers = SystemAPI.GetSingletonBuffer<TowerRegistryEntry>();
             _towerLevels = new NativeParallelMultiHashMap<int, TowerRegistryEntry>(towers.Capacity,Allocator.Persistent);
             
             foreach (var tower in towers)
             {
-                _towerLevels.Add((int) tower.Config.Value.TowerType, tower);
+                _towerLevels.Add((int) tower.TowerType, tower);
             }
             
             // Get the layers config
@@ -45,11 +44,19 @@ namespace Systems
             _filterTower = CollisionFilter.Zero;
             _filterTower.BelongsTo = _placementConfig.BelongsToOverlap.Value;
             _filterTower.CollidesWith = _placementConfig.CollidesWithOverlap.Value;
+            
+            _camera = Camera.main;
+            _eventSystem = EventSystem.current;
+        }
+
+        protected override void OnDestroy()
+        {
+            _towerLevels.Dispose();
         }
 
         protected override void OnUpdate()
         {
-            if (!Input.GetMouseButtonDown(0))
+            if (!Input.GetMouseButtonDown(0) || _eventSystem.IsPointerOverGameObject())
             {
                 return;
             }
@@ -69,19 +76,19 @@ namespace Systems
             {
                 return;
             }
-
+            
             var towerConfig = SystemAPI.GetComponent<TowerConfigAsset>(towerHit.Entity).Config.Value;
-
+            
             TowerRegistryEntry? currentTower = null;
             TowerRegistryEntry? currentTowerUpgrade = null;
             foreach (var towerRegEntry in _towerLevels.GetValuesForKey((int) towerConfig.TowerType))
             {
-                if (towerRegEntry.Config.Value.Level == towerConfig.Level)
+                if (towerRegEntry.TowerLevel == towerConfig.Level)
                 {
                     currentTower = towerRegEntry;
                 }
                 
-                if (towerRegEntry.Config.Value.Level == towerConfig.Level + 1)
+                if (towerRegEntry.TowerLevel == towerConfig.Level + 1)
                 {
                     currentTowerUpgrade = towerRegEntry;
                 }

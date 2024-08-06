@@ -8,7 +8,7 @@ namespace Components
         public Entity ProjectilePrefab;  
     }
     
-    public struct TowerConfigComponent
+    public struct TowerConfig
     {
         public float FireRate;                 
         public CollisionFilter Filter;      
@@ -20,6 +20,6 @@ namespace Components
 
     public struct TowerConfigAsset : IComponentData
     {
-        public BlobAssetReference<TowerConfigComponent> Config;    
+        public BlobAssetReference<TowerConfig> Config;    
     }
 }

@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c492d89cbef4184ad83f86979c76f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingPriceAmmount: 300
+  StartingPriceAmmount: 15000
 --- !u!4 &1548713082
 Transform:
   m_ObjectHideFlags: 0

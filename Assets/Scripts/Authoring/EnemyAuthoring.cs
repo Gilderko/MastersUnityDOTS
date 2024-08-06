@@ -2,6 +2,7 @@ using Components;
 using Components.Enemy;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Authoring
 {
@@ -10,6 +11,8 @@ namespace Authoring
         public float Speed;
         public int Health;
         public int EnemyReward;
+        
+        public Vector3 HealthBarOffset = Vector3.up * 2.5f;
     
         public class EnemyBaker : Baker<EnemyAuthoring>
         {
@@ -35,10 +38,16 @@ namespace Authoring
                 
                 AddComponent(entity, new HealthComponent()
                 {
-                    Value = authoring.Health 
+                    Value = authoring.Health,
+                    InitialValue = authoring.Health
                 });
 
                 AddBuffer<HitDataComponent>(entity);
+                AddComponentObject<HealthBarManagedComponent>(entity, new HealthBarManagedComponent()
+                {
+                    HealthSlider = null,
+                    Offset = authoring.HealthBarOffset
+                });
             }
         }
     }

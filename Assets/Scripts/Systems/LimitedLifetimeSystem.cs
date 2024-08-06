@@ -1,6 +1,8 @@
 ﻿using Components;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.VisualScripting;
 
 namespace Systems
 {
@@ -19,7 +21,7 @@ namespace Systems
             var ecbBos = SystemAPI
                 .GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
                 .CreateCommandBuffer(state.WorldUnmanaged);
-            
+
             foreach (var (time,entity) 
                      in SystemAPI.Query<RefRW<LimitedLifeComponent>>().WithEntityAccess())
             {

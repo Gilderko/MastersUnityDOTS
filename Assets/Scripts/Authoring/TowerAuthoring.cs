@@ -46,16 +46,16 @@ namespace Authoring
             }
         }
         
-        public BlobAssetReference<TowerConfigComponent> GenerateTowerBlobAsset()
+        public BlobAssetReference<TowerConfig> GenerateTowerBlobAsset()
         {
             var filter = CollisionFilter.Zero;
             filter.CollidesWith = Projectile.GetComponent<PhysicsShapeAuthoring>().CollidesWith.Value;
             filter.BelongsTo = Projectile.GetComponent<PhysicsShapeAuthoring>().BelongsTo.Value;
             
-            BlobAssetReference<TowerConfigComponent> bar;
+            BlobAssetReference<TowerConfig> bar;
             using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
             {
-                ref var tc = ref bb.ConstructRoot<TowerConfigComponent>();
+                ref var tc = ref bb.ConstructRoot<TowerConfig>();
                 tc.FireRate = FireRate;
                 tc.FireRange = Range;
                 tc.Filter = filter;
@@ -64,7 +64,7 @@ namespace Authoring
                 tc.TowerType = TowerType;
                 tc.Level = Level;
 
-                bar = bb.CreateBlobAssetReference<TowerConfigComponent>(Unity.Collections.Allocator.Persistent);
+                bar = bb.CreateBlobAssetReference<TowerConfig>(Unity.Collections.Allocator.Persistent);
             }
 
             return bar;

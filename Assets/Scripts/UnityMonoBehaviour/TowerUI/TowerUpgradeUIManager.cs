@@ -51,7 +51,7 @@ namespace UnityMonoBehaviour.TowerUI
 
             var transform = _world.EntityManager.GetComponentData<LocalTransform>(towerEntity);
             _currentTowerUpgradePanel.transform.position = (Vector3) transform.Position + Vector3.up * _panelYOffset;
-            _currentTowerUpgradePanel.Display(towerEntity, currentTower, towerUpgrade);
+            _currentTowerUpgradePanel.Display(towerEntity, currentTower, towerUpgrade, _world);
             _currentTowerUpgradePanel.SetCallbacks(CloseUICallback, ReplaceTowerCallback);
         }
 

@@ -23,16 +23,18 @@ namespace UnityMonoBehaviour.TowerUI
         private TowerRegistryEntry _currentTowerState;
         private TowerRegistryEntry _upgradeTowerState;
         
-        public void Display(Entity towerEntity, TowerRegistryEntry currentTower, TowerRegistryEntry nextTower)
+        public void Display(Entity towerEntity, TowerRegistryEntry currentTower, TowerRegistryEntry nextTower, World world)
         {
             _currentEntity = towerEntity;
             _currentTowerState = currentTower;
             _upgradeTowerState = nextTower;
-
-            _towerName.text = $"{currentTower.Config.Value.TowerType} Lvl {currentTower.Config.Value.Level}";
-            _damageText.text = $"Damage: {currentTower.Config.Value.ProjectileDamage}";
-            _attSpeedText.text = $"Attack speed: {currentTower.Config.Value.FireRate}";
-            _attRangeText.text = $"Attack range: {currentTower.Config.Value.FireRange}";
+            
+            var towerConfig = world.EntityManager.GetComponentData<TowerConfigAsset>(currentTower.TowerPrefab);
+            
+            _towerName.text = $"{towerConfig.Config.Value.TowerType} Lvl {towerConfig.Config.Value.Level}";
+            _damageText.text = $"Damage: {towerConfig.Config.Value.ProjectileDamage}";
+            _attSpeedText.text = $"Attack speed: {towerConfig.Config.Value.FireRate}";
+            _attRangeText.text = $"Attack range: {towerConfig.Config.Value.FireRange}";
             
             _upgradeText.text = $"{nextTower.BuildPrice}g";
             gameObject.SetActive(true);

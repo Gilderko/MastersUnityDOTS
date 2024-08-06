@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerHead: {fileID: 4104352337319223259}
-  Projectile: {fileID: 4534883387411157596, guid: b50736cdb52129645adce309baa69b01,
+  Projectile: {fileID: 4534883387411157596, guid: 92753c2290e9ffe44aab143effe97c65,
     type: 3}
   FireRate: 2
   Range: 20

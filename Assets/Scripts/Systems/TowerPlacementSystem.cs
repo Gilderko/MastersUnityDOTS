@@ -8,7 +8,7 @@ using Unity.Physics.Systems;
 using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
-using Ray = UnityEngine.Ray;
+using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace Systems
 {
@@ -53,7 +53,7 @@ namespace Systems
         {
             var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
             var ecbBos = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(CheckedStateRef.WorldUnmanaged);
-            
+
             if (!SystemAPI.TryGetSingletonEntity<TowerDummyComponent>(out var dummyTowerEntity))
             {
                 return;
@@ -61,89 +61,77 @@ namespace Systems
 
             var dummyTower = SystemAPI.GetComponent<TowerDummyComponent>(dummyTowerEntity);
             GenerateInputRays(out var inputPlace, out var inputMove);
-            
+
             if (!physicsWorld.CastRay(inputMove, out var moveHit))
             {
                 return;
             }
-                
-            var newTransform = LocalTransform.Identity;
-            newTransform.Position = moveHit.Position;
-            ecbBos.SetComponent(dummyTowerEntity, newTransform);
 
             if (!SystemAPI.HasBuffer<Child>(dummyTower.Visual))
             {
                 return;
             }
-            
-            var children = SystemAPI.GetBuffer<Child>(dummyTower.Visual);
-            if (!physicsWorld.CastRay(inputPlace, out var placementHit))
-            {  
-                HandleInvalidTowerPosition(children, ecbBos, dummyTowerEntity);
+
+            var isValidTowerPosition = physicsWorld.CastRay(inputPlace, out var placementHit);
+            var placementHitLocalTransform = placementHit.Position;
+            var distances = new NativeList<DistanceHit>(Allocator.Temp);
+            isValidTowerPosition = isValidTowerPosition && !physicsWorld.OverlapSphere(placementHitLocalTransform + math.up(), dummyTower.BuildRadius, ref distances, _filterOverlap);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                HandleTowerBuild(dummyTower, isValidTowerPosition, ecbBos, placementHitLocalTransform, dummyTowerEntity);
             }
             else
             {
-                var moneyStorageEntity = SystemAPI.GetSingletonEntity<MoneyComponent>();
-                var moneyStorage = SystemAPI.GetAspect<MoneyStorageAspect>(moneyStorageEntity);
-
-                var distances = new NativeList<DistanceHit>(Allocator.Temp);
-                var placementHitLocalTransform = placementHit.Position;
-                
-                if (dummyTower.BuildPrice <= moneyStorage.CurrentMoney
-                    && !physicsWorld.OverlapSphere(placementHitLocalTransform + math.up(), dummyTower.BuildRadius, ref distances, _filterOverlap))
-                {
-                    HandleTowerValidPosition(children);
-                    PlaceNewTower(ecbBos, dummyTower, placementHitLocalTransform, moneyStorage, dummyTowerEntity);
-                }
-                else
-                {
-                    HandleInvalidTowerPosition(children, ecbBos, dummyTowerEntity);
-                }
-
-                distances.Dispose();
+                HandleTowerMovement(ecbBos, dummyTowerEntity, dummyTower, moveHit, isValidTowerPosition);
             }
+            
+            distances.Dispose();
         }
 
-        private void HandleTowerValidPosition(DynamicBuffer<Child> visualChildren)
+        private void HandleTowerMovement(EntityCommandBuffer ecbBos, Entity dummyTowerEntity, TowerDummyComponent dummyTower, RaycastHit moveHit, bool isValidTowerPosition)
         {
-            foreach (var visualChild in  visualChildren)
-            {
-                if (!SystemAPI.HasComponent<URPMaterialPropertyBaseColor>(visualChild.Value))
-                {
-                    continue;
-                }
-                var childColor = SystemAPI.GetComponentRW<URPMaterialPropertyBaseColor>(visualChild.Value);
-                childColor.ValueRW.Value = new float4(0f, 1f, 0f, 0f);
-            }
-        }
+            MoveEntityToPlace(moveHit, ecbBos, dummyTowerEntity);
 
-        private void HandleInvalidTowerPosition(DynamicBuffer<Child> visualChildren, EntityCommandBuffer ecbBos, Entity dummyTowerEntity)
-        {
+            var visualChildren = SystemAPI.GetBuffer<Child>(dummyTower.Visual);
             foreach (var visualChild in visualChildren)
             {
                 if (!SystemAPI.HasComponent<URPMaterialPropertyBaseColor>(visualChild.Value))
                 {
                     continue;
                 }
+
                 var childColor = SystemAPI.GetComponentRW<URPMaterialPropertyBaseColor>(visualChild.Value);
-                childColor.ValueRW.Value = new float4(1f, 0f, 0f, 0f);
+                childColor.ValueRW.Value = new float4(isValidTowerPosition ? 0 : 1, isValidTowerPosition ? 1 : 0, 0f, 0f);
             }
-            if (!Input.GetMouseButtonDown(0))
+        }
+
+        private void HandleTowerBuild(TowerDummyComponent dummyTower, bool isValidTowerPosition, EntityCommandBuffer ecbBos, float3 placementHitLocalTransform, Entity dummyTowerEntity)
+        {
+            var moneyStorageEntity = SystemAPI.GetSingletonEntity<MoneyComponent>();
+            var moneyStorage = SystemAPI.GetAspect<MoneyStorageAspect>(moneyStorageEntity);
+            
+            if (dummyTower.BuildPrice <= moneyStorage.CurrentMoney && isValidTowerPosition)
             {
-                return;
+                PlaceNewTower(ecbBos, dummyTower, placementHitLocalTransform, moneyStorage, dummyTowerEntity);
+            }
+            else
+            {
+                ecbBos.DestroyEntity(dummyTowerEntity);
             }
 
-            ecbBos.DestroyEntity(dummyTowerEntity);
+        }
+
+        private static void MoveEntityToPlace(RaycastHit moveHit, EntityCommandBuffer ecbBos, Entity dummyTowerEntity)
+        {
+            var newTransform = LocalTransform.Identity;
+            newTransform.Position = moveHit.Position;
+            ecbBos.SetComponent(dummyTowerEntity, newTransform);
         }
 
         private void PlaceNewTower(EntityCommandBuffer ecbBos, TowerDummyComponent dummyTower, float3 placementHitLocalTransform, MoneyStorageAspect moneyStorage,
             Entity dummyTowerEntity)
         {
-            if (!Input.GetMouseButtonDown(0))
-            {
-                return;
-            }
-            
             var newTower = ecbBos.Instantiate(dummyTower.TowerPrefab);
             var transform = LocalTransform.Identity;
             transform.Position = placementHitLocalTransform;

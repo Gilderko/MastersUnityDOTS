@@ -27,7 +27,7 @@ namespace Authoring
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 var buffer = AddBuffer<TowerRegistryEntry>(entity);
-
+                
                 AddComponent(entity, new TowerPlacementLayersComponent()
                 {
                     BelongsToMove = authoring.BelongsToMove,
@@ -42,9 +42,6 @@ namespace Authoring
                 
                 foreach (var towerToAdd in authoring.Towers)
                 {
-                    var bar = towerToAdd.TowerPrefab.GenerateTowerBlobAsset();
-                    AddBlobAsset(ref bar, out var _);
-                    
                     buffer.Add(new TowerRegistryEntry()
                     {
                         TowerPrefab = GetEntity(towerToAdd.TowerPrefab, TransformUsageFlags.Dynamic),
@@ -52,7 +49,8 @@ namespace Authoring
                         BuildRadius = towerToAdd.BuildRadius,
                         BuildPrice = towerToAdd.BuildPrice,
                         Buildable = towerToAdd.Buildable,
-                        Config = bar
+                        TowerLevel = towerToAdd.TowerPrefab.Level,
+                        TowerType = towerToAdd.TowerPrefab.TowerType,
                     });
                 }
             }

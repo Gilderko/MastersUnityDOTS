@@ -21,9 +21,11 @@ namespace UnityMonoBehaviour.TowerUI
             _towerPrefabEntry = towerEntry;
             _world = World.DefaultGameObjectInjectionWorld;
 
-            TowerName.text = $"{towerEntry.Config.Value.TowerType}";
-            TowerAttackSpeed.text = $"Attack speed: {towerEntry.Config.Value.FireRate}";
-            TowerDamage.text = $"Tower damage: {towerEntry.Config.Value.ProjectileDamage}";
+            var towerConfig = _world.EntityManager.GetComponentData<TowerConfigAsset>(towerEntry.TowerPrefab);
+
+            TowerName.text = $"{towerConfig.Config.Value.TowerType}";
+            TowerAttackSpeed.text = $"Attack speed: {towerConfig.Config.Value.FireRate}";
+            TowerDamage.text = $"Tower damage: {towerConfig.Config.Value.ProjectileDamage}";
             TowerPrice.text = $"Price: {towerEntry.BuildPrice}g";
         }
         
