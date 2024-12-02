@@ -1,11 +1,13 @@
 ﻿using Components;
 using Components.Aspects;
+using Components.Spawning;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace Systems
 {
     [BurstCompile]
+    [UpdateAfter(typeof(ProcessProjectileHitsSystem))]
     public partial struct UpdateMoneySystem : ISystem
     {
         [BurstCompile]
@@ -19,7 +21,6 @@ namespace Systems
         {
             var moneyStorageEntity = SystemAPI.GetSingletonEntity<MoneyComponent>();
             var moneyStorage = SystemAPI.GetAspect<MoneyStorageAspect>(moneyStorageEntity);
-            
             moneyStorage.EvaluateMoneyBuffer();
         }
 

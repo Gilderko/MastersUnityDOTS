@@ -53,7 +53,10 @@ public partial struct EnemyBaseCollisionSystem : ISystem
         var healthToSubtract = result[0];
         if (friendlyBaseHealth.Value < healthToSubtract)
         {
-            ecbBos.DestroyEntity(friendlyBaseEntity);
+            ecbBos.AddComponent<LevelEndComponent>(friendlyBaseEntity, new LevelEndComponent()
+            {
+                Success = false
+            });
         }
         else
         {

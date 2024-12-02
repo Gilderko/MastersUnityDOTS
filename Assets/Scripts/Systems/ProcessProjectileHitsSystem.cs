@@ -1,7 +1,12 @@
-﻿using Components;
+﻿using System;
+using Components;
+using Components.Aspects;
+using Components.Spawning;
 using Systems.Jobs;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Physics;
+using UnityEngine;
 
 namespace Systems
 {
@@ -12,6 +17,7 @@ namespace Systems
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<SpawnerTagComponent>();
             state.RequireForUpdate<MoneyComponent>();
             state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         }
@@ -19,16 +25,32 @@ namespace Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
-            var moneyStorageEntity = SystemAPI.GetSingletonEntity<MoneyComponent>();
-            
-            var hitsJob = new ProcessProjectileHitsJob()
-            {
-                ECB = ecb,
-                MoneyStorageEntity = moneyStorageEntity,
-            };
+            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var moneyStorageEntity = SystemAPI.GetSingletonEntity<AddMoneyElement>();
 
-            hitsJob.ScheduleParallel();
+            var entitiesKilled = 0;
+            foreach (var enemyAspect in SystemAPI.Query<EnemyAspect>())
+            {
+                enemyAspect.EvaluateHealthBuffer();
+
+                if (enemyAspect.CurrentHealth > 0)
+                {
+                    continue;
+                }
+
+                entitiesKilled++;
+                ecb.AppendToBuffer(moneyStorageEntity, new AddMoneyElement()
+                {
+                    MoneyReward = enemyAspect.EnemyConfig.Reward
+                });
+                
+                ecb.DestroyEntity(enemyAspect.Entity);
+            }
+            
+            var waveAspectEntity = SystemAPI.GetSingletonEntity<SpawnerTagComponent>();
+            var waveAspect = SystemAPI.GetAspect<SpawnerAspect>(waveAspectEntity);
+            
+            waveAspect.SetKilled(entitiesKilled);
         }
 
         [BurstCompile]

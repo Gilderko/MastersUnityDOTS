@@ -241,8 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6b3df386594f84b5321a7f5883a9bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
-  Health: 50
+  Speed: 3
+  Health: 100
   EnemyReward: 25
   EnemyDamage: 10
   HealthBarOffset: {x: 0, y: 2.5, z: 0}

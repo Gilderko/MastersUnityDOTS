@@ -20,6 +20,16 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 78f1a305cf8b6d54f929dc84118b9ce0, type: 2}
     - target: {fileID: 6948124617389802610, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
         type: 3}
+      propertyPath: Speed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6948124617389802610, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
+        type: 3}
+      propertyPath: Health
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6948124617389802610, guid: e4918ae07b6f8cc4fa0bf59ff800e201,
+        type: 3}
       propertyPath: EnemyReward
       value: 15
       objectReference: {fileID: 0}

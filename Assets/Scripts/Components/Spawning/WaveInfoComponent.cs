@@ -7,8 +7,6 @@ namespace Components.Spawning
 {
     public struct WaveInfoComponent : IComponentData, IEnableableComponent
     {
-        public int MaxSpawnedAtOnce;
         public float TimeBetweenSpawns;
-        public int AlreadySpawnedCount;
     }
 }

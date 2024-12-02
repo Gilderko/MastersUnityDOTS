@@ -9,10 +9,17 @@ namespace Components.Aspects
     {
         public readonly Entity Entity;
 
-        private readonly RefRO<SpawnerTagComponent> _spawnerTag;
+        private readonly RefRW<SpawnerTagComponent> _spawnerTag;
         private readonly RefRW<LocalTransform> _transform;
         private readonly DynamicBuffer<EntityReferenceBufferElement> _waves;
 
+        public bool IsLevelFinished => _spawnerTag.ValueRO.TotalEnemies == _spawnerTag.ValueRO.TotalEnemiesKilled;
+        
+        public void SetKilled(int killedAmmount)
+        {
+            _spawnerTag.ValueRW.TotalEnemiesKilled += killedAmmount;
+        }
+        
         public void MoveToNextWave(Entity currentWave, EntityCommandBuffer ecb)
         {
             for (var i = 0; i < _waves.Length; i++)

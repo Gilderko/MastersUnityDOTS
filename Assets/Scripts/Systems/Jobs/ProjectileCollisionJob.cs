@@ -26,7 +26,6 @@ namespace Systems.Jobs
             var projectile = Entity.Null;
             var enemy = Entity.Null;
 
-            // Identify which entity is which
             if (Projectiles.HasComponent(triggerEvent.EntityA))
                 projectile = triggerEvent.EntityA;
             if (Projectiles.HasComponent(triggerEvent.EntityB))
@@ -36,14 +35,12 @@ namespace Systems.Jobs
             if (Healths.HasComponent(triggerEvent.EntityB))
                 enemy = triggerEvent.EntityB;
 
-            // if its a pair of entity we don't want to process, exit
             if (Entity.Null.Equals(projectile)
                 || Entity.Null.Equals(enemy))
             {
                 return;
             }
             
-            // Damage enemy
             var projectileConfig = ProjectileConfigs[projectile].Config.Value;
             var damageToDeal = projectileConfig.Damage;
             var projectilePosition = Positions[projectile].Position;
@@ -71,8 +68,6 @@ namespace Systems.Jobs
                 });
             }
             
-            
-            // Spawn VFX
             var impactPrefab = Projectiles[projectile].VFXImpactPrefab;
             if (impactPrefab != Entity.Null)
             {

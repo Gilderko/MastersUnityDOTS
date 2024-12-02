@@ -878,6 +878,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10.25
       objectReference: {fileID: 0}
+    - target: {fileID: 8713916313344288904, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: LevelInfo._waves.Array.data[0]._timeBetweenSpawns
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713916313344288904, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: LevelInfo._waves.Array.data[0]._enemyTypesToSpawn.Array.data[0]._countToSpawn
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713916313344288904, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: LevelInfo._waves.Array.data[0]._enemyTypesToSpawn.Array.data[1]._countToSpawn
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8713916313344288904, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: LevelInfo._waves.Array.data[1]._enemyTypesToSpawn.Array.data[0]._countToSpawn
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

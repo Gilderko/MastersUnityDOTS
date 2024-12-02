@@ -10,6 +10,8 @@ namespace Components.Aspects
         private readonly DynamicBuffer<AddMoneyElement> _addMoneyElements;
 
         public int CurrentMoney => _moneyStorage.ValueRO.CurrentMoney;
+
+        public int GetTotalMoneyElements => _addMoneyElements.Length;
         
         public void EvaluateMoneyBuffer()
         {

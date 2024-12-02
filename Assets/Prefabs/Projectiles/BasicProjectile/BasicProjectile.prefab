@@ -327,6 +327,6 @@ MonoBehaviour:
   Speed: 50
   ImpactVFX: {fileID: 1505610324796538, guid: 1e355725d225f5b4ab56d513fd54add1, type: 3}
   MaxLifeSeconds: 5
-  Damage: 10
+  Damage: 15
   ProjectileType: 0
   ExplosiveDamageRadius: 5

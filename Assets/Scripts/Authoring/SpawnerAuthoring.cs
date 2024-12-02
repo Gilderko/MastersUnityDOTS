@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Components;
 using Components.Enemy;
@@ -30,8 +31,13 @@ namespace Authoring
                 {
                     PrepareWaves(waveBuffer, blobPathReference, newWave, index);
                 }
-                
-                AddComponent(spawnerEntity, new SpawnerTagComponent());
+
+                var totalEnemies = authoring.LevelInfo.Waves.Sum(info => info.EntitiesToSpawn.Sum(entity => entity.CountEntitiesToSpawn));
+                AddComponent(spawnerEntity, new SpawnerTagComponent()
+                {
+                    TotalEnemiesKilled = 0, 
+                    TotalEnemies = totalEnemies
+                });
             }
 
             private void PrepareWaves(DynamicBuffer<EntityReferenceBufferElement> waveBuffer, BlobAssetReference<BlobPath> blobPathReference, WaveInfo newWave, int index)
@@ -45,8 +51,6 @@ namespace Authoring
                 AddComponent(newWaveEntity, new PathComponent() { Path = blobPathReference });
                 AddComponent(newWaveEntity, new WaveInfoComponent()
                 {
-                    AlreadySpawnedCount = 0,
-                    MaxSpawnedAtOnce = newWave.MaxSpawnedAtOnce,
                     TimeBetweenSpawns = newWave.TimeBetweenSpawns
                 });
                 SetComponentEnabled<WaveInfoComponent>(newWaveEntity, index == 0);

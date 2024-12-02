@@ -29,7 +29,7 @@ namespace Systems
 
                 healthSlider.transform.position = entitiesTrans.Position + healthUI.Offset;
                 healthSlider.transform.localScale = healthUI.ScaleOverride;
-                healthSlider.DisplayHealth(health.Value / (float) health.InitialValue);
+                healthSlider.DisplayHealth(Mathf.Max(health.Value, 0) / (float) health.InitialValue);
 
                 healthUI.HealthSlider = healthSlider;
             }

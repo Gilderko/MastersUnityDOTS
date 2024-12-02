@@ -2,6 +2,7 @@
 using Components.Enemy;
 using Systems.Jobs;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
@@ -20,7 +21,6 @@ public partial struct ProjectileCoillisionSystem : ISystem
     {
         state.RequireForUpdate<PhysicsWorldSingleton>();
         state.RequireForUpdate<SimulationSingleton>();
-        state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
         _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>(true);
         _impactLookup = SystemAPI.GetComponentLookup<ImpactComponent>(true);
         _projectileConfigLookup = SystemAPI.GetComponentLookup<ProjectileConfigComponent>(true);
@@ -35,7 +35,7 @@ public partial struct ProjectileCoillisionSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var ecbBos = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+        var ecbBos = new EntityCommandBuffer(Allocator.TempJob);
         var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
         
         _positionLookup.Update(ref state);
@@ -54,7 +54,11 @@ public partial struct ProjectileCoillisionSystem : ISystem
             Healths = _healthLookup,
             ECB = ecbBos
         };
-
-        state.Dependency = job.Schedule(simulation, state.Dependency);
+        
+        var jobHandle = job.Schedule(simulation, state.Dependency);
+        jobHandle.Complete();
+        
+        ecbBos.Playback(state.EntityManager);
+        ecbBos.Dispose();
     }
 }
