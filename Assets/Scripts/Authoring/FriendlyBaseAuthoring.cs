@@ -26,7 +26,7 @@ namespace Authoring
                 });
                 
                 AddComponentObject<HealthBarManagedComponent>(entity, new HealthBarManagedComponent()
-                {
+                {   
                     HealthSlider = null,
                     ScaleOverride = authoring.ScaleOverride,
                     Offset = authoring.HealthBarOffset

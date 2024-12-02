@@ -186,11 +186,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FriendlyBase
       objectReference: {fileID: 0}
-    - target: {fileID: 6316192932537200230, guid: f4c4ae0904e647645a0818557e6577b2,
-        type: 3}
-      propertyPath: ScaleOverride.x
-      value: 1.7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -689,6 +684,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759030627543249591, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759030627543249591, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.5
       objectReference: {fileID: 0}
     - target: {fileID: 7128856258892558331, guid: 5a6f9e15c17a6fb4da684dd8d08fce39,
         type: 3}

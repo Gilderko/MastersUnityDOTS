@@ -11,5 +11,6 @@ namespace Components.Enemy
     {
         public int Reward;
         public float Speed;
+        public int AttackDamage;
     }
 }

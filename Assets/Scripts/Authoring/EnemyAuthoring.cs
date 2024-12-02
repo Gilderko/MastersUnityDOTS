@@ -11,6 +11,7 @@ namespace Authoring
         public float Speed;
         public int Health;
         public int EnemyReward;
+        public int EnemyDamage = 10;
         
         public Vector3 HealthBarOffset = Vector3.up * 2.5f;
     
@@ -26,6 +27,7 @@ namespace Authoring
                     ref var tc = ref bb.ConstructRoot<EnemyConfig>();
                     tc.Reward = authoring.EnemyReward;
                     tc.Speed = authoring.Speed;
+                    tc.AttackDamage = authoring.EnemyDamage;
                    
                     blobAssetReference = bb.CreateBlobAssetReference<EnemyConfig>(Unity.Collections.Allocator.Persistent);
                 }
