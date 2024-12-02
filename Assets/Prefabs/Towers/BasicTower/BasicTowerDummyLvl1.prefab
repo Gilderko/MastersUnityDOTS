@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 4492501371631685803, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
         type: 3}
       propertyPath: m_Name
-      value: BasicTowerDummy
+      value: BasicTowerDummyLvl1
       objectReference: {fileID: 0}
     - target: {fileID: 4770316398421589952, guid: 0c6a5eddaaba76e4e8ed3329219e8ab3,
         type: 3}

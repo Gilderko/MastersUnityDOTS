@@ -63,5 +63,7 @@ public partial struct EnemyBaseCollisionSystem : ISystem
                 Value = friendlyBaseHealth.Value - healthToSubtract
             });
         }
+        
+        result.Dispose();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityMonoBehaviour;
 
 namespace Components
@@ -18,7 +20,7 @@ namespace Components
                 return;
             }
             
-            HealthSlider.gameObject.SetActive(false);
+            GameObject.Destroy(HealthSlider.gameObject);
         }
     }
 }

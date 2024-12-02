@@ -7,7 +7,7 @@ namespace UnityMonoBehaviour
     {
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private float _moveSpeed;
-        
+        [SerializeField] private float _scrollSpeed;
         
         private void Update()
         {
@@ -28,6 +28,8 @@ namespace UnityMonoBehaviour
             {
                 moveVector.x += 1;
             }
+            
+            moveVector.y += -1 * Input.mouseScrollDelta.y * _scrollSpeed;
 
             _mainCamera.transform.position += moveVector * (_moveSpeed * Time.deltaTime);
         }
