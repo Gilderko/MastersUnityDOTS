@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Components.Spawning
 {
-    public struct EntityAndProbabilityData : IBufferElementData
+    public struct EntitySpawnData : IBufferElementData
     {
         public Entity EntityToSpawn;
         public int CountToSpawn;

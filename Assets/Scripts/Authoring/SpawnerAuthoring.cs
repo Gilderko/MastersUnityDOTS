@@ -59,11 +59,11 @@ namespace Authoring
                     TimerValue = 0
                 });
 
-                var enemiesBuffer = AddBuffer<EntityAndProbabilityData>(newWaveEntity);
+                var enemiesBuffer = AddBuffer<EntitySpawnData>(newWaveEntity);
 
                 foreach (var enemyInfo in newWave.EntitiesToSpawn)
                 {
-                    enemiesBuffer.Add(new EntityAndProbabilityData()
+                    enemiesBuffer.Add(new EntitySpawnData()
                     {
                         CountToSpawn = enemyInfo.CountEntitiesToSpawn,
                         EntityToSpawn = GetEntity(enemyInfo.SpawnableEntity, TransformUsageFlags.Dynamic),

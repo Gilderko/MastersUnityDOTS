@@ -4,7 +4,7 @@ using UnityEngine;
 namespace UnityMonoBehaviour.SpawningConfig
 {
     [Serializable]
-    public class EntityAndProbability
+    public class EntitySpawnMonoData
     {
         [SerializeField] private GameObject _entityToSpawn;
         [SerializeField] private int _countToSpawn;

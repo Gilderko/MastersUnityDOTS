@@ -19,7 +19,7 @@ namespace Components.Aspects
         private readonly RefRW<TimerComponent> _timer;
         private readonly RefRW<RandomComponent> _random;
         
-        private readonly DynamicBuffer<EntityAndProbabilityData> _entitiesToSpawn;
+        private readonly DynamicBuffer<EntitySpawnData> _entitiesToSpawn;
 
         public void SpawnNewEntity(float deltaTime, EntityCommandBuffer ecb, SpawnerAspect spawner)
         {

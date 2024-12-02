@@ -10,10 +10,10 @@ namespace UnityMonoBehaviour.SpawningConfig
     
         [SerializeField] private int _maxSpawnedAtOnce;
         [SerializeField] private float _timeBetweenSpawns;
-        [SerializeField] private EntityAndProbability[] _enemyTypesToSpawn = Array.Empty<EntityAndProbability>();
+        [SerializeField] private EntitySpawnMonoData[] _enemyTypesToSpawn = Array.Empty<EntitySpawnMonoData>();
 
         public int MaxSpawnedAtOnce => _maxSpawnedAtOnce;
         public float TimeBetweenSpawns => _timeBetweenSpawns;
-        public EntityAndProbability[] EntitiesToSpawn => _enemyTypesToSpawn;
+        public EntitySpawnMonoData[] EntitiesToSpawn => _enemyTypesToSpawn;
     }
 }
