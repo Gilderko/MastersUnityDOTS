@@ -26,8 +26,9 @@ namespace Systems
                 {
                     healthSlider = _healthBarPoolManager.GetNewSlider();
                 }
-                
+
                 healthSlider.transform.position = entitiesTrans.Position + healthUI.Offset;
+                healthSlider.transform.localScale = healthUI.ScaleOverride;
                 healthSlider.DisplayHealth(health.Value / (float) health.InitialValue);
 
                 healthUI.HealthSlider = healthSlider;
