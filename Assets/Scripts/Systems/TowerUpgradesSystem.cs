@@ -9,6 +9,9 @@ using UnityEngine.EventSystems;
 
 namespace Systems
 {
+    /// <summary>
+    /// Processes input information from the user and signals for the instantiation of upgrade UI for a tower
+    /// </summary>
     [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     [UpdateAfter(typeof(PhysicsSystemGroup))]
     public partial class TowerUpgradesSystem : SystemBase

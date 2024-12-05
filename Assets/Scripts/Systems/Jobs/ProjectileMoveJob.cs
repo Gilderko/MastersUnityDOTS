@@ -6,9 +6,13 @@ using Unity.Mathematics;
 using Unity.Transforms;
 namespace Systems.Jobs
 {
+    /// <summary>
+    /// Move all Projectiles towards their enemy targets or forwards (if they dont have a target) in parallel
+    /// </summary>
     [BurstCompile]
     public partial struct ProjectileMoveJob : IJobEntity
     {
+        // We can write in parallel since each Execution method only move a single projectile
         [NativeDisableParallelForRestriction]
         public ComponentLookup<LocalTransform> PositionLookup;
         public float DeltaTime;

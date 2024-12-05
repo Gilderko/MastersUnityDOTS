@@ -7,6 +7,9 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
 
+/// <summary>
+/// Schedules ProjectileCollisionJob which filters through all collisions and generates collision data 
+/// </summary>
 [UpdateAfter(typeof(TransformSystemGroup))]
 [BurstCompile]
 public partial struct ProjectileCoillisionSystem : ISystem

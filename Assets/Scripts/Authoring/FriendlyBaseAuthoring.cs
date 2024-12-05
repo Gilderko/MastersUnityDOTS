@@ -13,7 +13,6 @@ namespace Authoring
         
         private class FriendlyBaseAuthoringBaker : Baker<FriendlyBaseAuthoringAuthoring>
         {
-            
             public override void Bake(FriendlyBaseAuthoringAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);

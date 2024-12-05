@@ -7,6 +7,9 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
 
+/// <summary>
+/// Scheduled a CollisionJob which processes all collisions between enemies and the friendly base
+/// </summary>
 [UpdateAfter(typeof(TransformSystemGroup))]
 [BurstCompile]
 public partial struct EnemyBaseCollisionSystem : ISystem

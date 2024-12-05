@@ -46,6 +46,10 @@ namespace Authoring
             }
         }
         
+        /// <summary>
+        /// Generate shared blob config for the appropriate new tower
+        /// </summary>
+        /// <returns></returns>
         public BlobAssetReference<TowerConfig> GenerateTowerBlobAsset()
         {
             var filter = CollisionFilter.Zero;

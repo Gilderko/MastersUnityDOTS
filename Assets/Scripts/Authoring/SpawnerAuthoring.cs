@@ -40,6 +40,13 @@ namespace Authoring
                 });
             }
 
+            /// <summary>
+            /// Prepares data for each individual wave in the level
+            /// </summary>
+            /// <param name="waveBuffer"></param>
+            /// <param name="blobPathReference"></param>
+            /// <param name="newWave"></param>
+            /// <param name="index"></param>
             private void PrepareWaves(DynamicBuffer<EntityReferenceBufferElement> waveBuffer, BlobAssetReference<BlobPath> blobPathReference, WaveInfo newWave, int index)
             {
                 var newWaveEntity = CreateAdditionalEntity(TransformUsageFlags.Dynamic);

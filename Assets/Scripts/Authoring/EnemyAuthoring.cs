@@ -21,6 +21,7 @@ namespace Authoring
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 
+                // Create shared data between several enemy entities to shave memory
                 BlobAssetReference<EnemyConfig> blobAssetReference;
                 using (var bb = new BlobBuilder(Unity.Collections.Allocator.Temp))
                 {

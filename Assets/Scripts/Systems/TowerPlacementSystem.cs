@@ -12,6 +12,9 @@ using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace Systems
 {
+    /// <summary>
+    /// Handles all logic for creating new towers by checking appropriate physics conditions, overlaps and required funds for creating towers
+    /// </summary>
     [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     [UpdateAfter(typeof(PhysicsSystemGroup))]
     public partial class TowerPlacementSystem : SystemBase

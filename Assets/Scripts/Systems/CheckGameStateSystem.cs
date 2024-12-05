@@ -6,6 +6,9 @@ using Unity.Entities;
 
 namespace Systems
 {
+    /// <summary>
+    /// Queries the Spawner aspect to find if the final wave is finished and all enemies have been killed
+    /// </summary>
     [UpdateInGroup(typeof(LateSimulationSystemGroup))]
     public partial struct CheckGameStateSystem : ISystem
     {

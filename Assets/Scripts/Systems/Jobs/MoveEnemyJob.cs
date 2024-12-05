@@ -4,6 +4,9 @@ using Unity.Entities;
 
 namespace Systems.Jobs
 {
+    /// <summary>
+    /// Moves all entities along the path in parallel
+    /// </summary>
     [BurstCompile]
     public partial struct MoveEnemyJob : IJobEntity
     {

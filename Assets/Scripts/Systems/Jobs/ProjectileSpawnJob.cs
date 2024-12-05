@@ -9,6 +9,9 @@ using Unity.Transforms;
 
 namespace Systems.Jobs
 {
+    /// <summary>
+    /// Iterates over all available towers and instantiates appropriate projectiles based on the timer and tower configuration
+    /// </summary>
     [BurstCompile]
     public partial struct ProjectileSpawnJob : IJobEntity
     {

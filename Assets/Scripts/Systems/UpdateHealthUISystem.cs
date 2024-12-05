@@ -7,6 +7,9 @@ using UnityMonoBehaviour;
 
 namespace Systems
 {
+    /// <summary>
+    /// Updates the position and health display values of all entities which have both the HealthComponent and HealthBarManagedComponent
+    /// </summary>
     [UpdateAfter(typeof(ProcessProjectileHitsSystem))]
     public partial class UpdateHealthUISystem : SystemBase
     {

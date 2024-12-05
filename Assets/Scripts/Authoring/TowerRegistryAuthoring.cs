@@ -21,6 +21,9 @@ namespace Authoring
         public PhysicsCategoryTags BelongsToOverlap;
         public PhysicsCategoryTags CollidesWithOverlap;
         
+        /// <summary>
+        /// Sets up a registry of available tower for building
+        /// </summary>
         private class TowerRegistryAuthoringBaker : Baker<TowerRegistryAuthoring>
         {
             public override void Bake(TowerRegistryAuthoring authoring)
